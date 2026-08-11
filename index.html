@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>[Novia] & [Novio] · Invitación de Boda</title>
+    <meta name="description" content="Invitación digital de boda" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- ===================== LOADER / PORTADA DE ENTRADA ===================== -->
+    <div id="loader" class="loader">
+      <div class="loader__frame">
+        <span class="loader__eyebrow">Nos casamos</span>
+        <h1 class="loader__names">
+          <span>[Novia]</span>
+          <span class="loader__amp">&amp;</span>
+          <span>[Novio]</span>
+        </h1>
+        <span class="loader__date">15 · 03 · 2027</span>
+        <button id="enter-btn" class="btn btn--outline" type="button">
+          <span>Abrir invitación</span>
+        </button>
+        <p class="loader__hint">Con sonido — música en vivo</p>
+      </div>
+    </div>
+
+    <!-- Botón flotante de música -->
+    <button id="music-toggle" class="music-toggle" type="button" aria-pressed="true" aria-label="Silenciar música">
+      <svg viewBox="0 0 24 24" class="icon-note-mini"><path d="M9 18V5l11-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="17" cy="16" r="3" /></svg>
+    </button>
+    <audio id="bg-music" src="/assets/audio/musica.mp3" loop preload="auto"></audio>
+
+    <main id="app">
+      <!-- ===================== HERO / VIDEO SCROLL-SCRUB ===================== -->
+      <section class="hero" id="hero" data-scroll-video-section>
+        <div class="hero__pin">
+          <video
+            id="hero-video"
+            class="hero__video mono"
+            src="/assets/video/hero.mp4"
+            poster="/assets/images/foto-01.jpg"
+            muted
+            loop
+            playsinline
+            autoplay
+            preload="auto"
+          ></video>
+          <div class="hero__fallback" aria-hidden="true">
+            <div class="hero__fallback-monogram">[N] &amp; [N]</div>
+          </div>
+          <div class="hero__overlay"></div>
+          <div class="hero__content">
+            <span class="eyebrow">Nos casamos</span>
+            <h1 class="hero__title">[Novia] &amp; [Novio]</h1>
+            <p class="hero__subtitle">Celebra con nosotros el inicio de nuestra historia</p>
+          </div>
+          <div class="scroll-cue">
+            <span></span>
+            Desliza para comenzar
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== CONTADOR ===================== -->
+      <section class="section section--dark" id="countdown-section">
+        <div class="container">
+          <p class="eyebrow reveal-up">Falta muy poco</p>
+          <h2 class="section-title reveal-up">Nuestra boda</h2>
+          <div class="countdown" id="countdown" data-target="2027-03-15T17:00:00">
+            <div class="countdown__item reveal-up">
+              <span class="countdown__value" data-unit="days">00</span>
+              <span class="countdown__label">Días</span>
+            </div>
+            <div class="countdown__item reveal-up">
+              <span class="countdown__value" data-unit="hours">00</span>
+              <span class="countdown__label">Horas</span>
+            </div>
+            <div class="countdown__item reveal-up">
+              <span class="countdown__value" data-unit="minutes">00</span>
+              <span class="countdown__label">Min</span>
+            </div>
+            <div class="countdown__item reveal-up">
+              <span class="countdown__value" data-unit="seconds">00</span>
+              <span class="countdown__label">Seg</span>
+            </div>
+          </div>
+          <p class="countdown__date reveal-up">Sábado 15 de marzo, 2027 · 5:00 p.m.</p>
+        </div>
+      </section>
+
+      <!-- ===================== BENDICIÓN Y PADRES ===================== -->
+      <section class="section section--dark section--blessing" id="blessing">
+        <div class="container container--narrow">
+          <p class="eyebrow reveal-up">Con la bendición de Dios</p>
+          <h2 class="section-title reveal-up">y de nuestros padres</h2>
+        </div>
+
+        <div class="container container--split parents">
+          <div class="parents__block reveal-up">
+            <svg viewBox="0 0 100 122" class="wp-couple" aria-hidden="true">
+              <ellipse class="wp-shadow" cx="50" cy="116" rx="42" ry="5" />
+              <g class="wp-figure wp-figure--bride">
+                <g class="wp-part wp-part--dress"><polygon points="16,20 32,20 28,46 44,110 4,110 20,46" /></g>
+                <g class="wp-part wp-part--arm-hang"><polygon points="14,22 10,22 6,46 10,46" /></g>
+                <g class="wp-part wp-part--arm-raise"><polygon points="30,22 34,22 48,4 44,4" /></g>
+                <polygon class="wp-head" points="24,2 30,6 30,14 24,18 18,14 18,6" />
+              </g>
+              <g transform="translate(54,0)">
+                <g class="wp-figure wp-figure--groom">
+                  <g class="wp-part wp-part--leg-l"><polygon points="18,50 26,50 24,106 14,106" /></g>
+                  <g class="wp-part wp-part--leg-r"><polygon points="26,50 34,50 38,106 28,106" /></g>
+                  <polygon class="wp-torso" points="16,20 32,20 28,50 20,50" />
+                  <g class="wp-part wp-part--arm-hang"><polygon points="34,22 38,22 42,46 38,46" /></g>
+                  <g class="wp-part wp-part--arm-raise"><polygon points="18,22 14,22 0,4 4,4" /></g>
+                  <polygon class="wp-head" points="24,2 30,6 30,14 24,18 18,14 18,6" />
+                </g>
+              </g>
+              <circle class="wp-hands" cx="51" cy="4" r="4" />
+            </svg>
+            <span class="eyebrow">Padres de la novia</span>
+            <p class="parents__names">María Fernanda López Ibarra<br />&amp;<br />Roberto Sánchez García</p>
+          </div>
+          <div class="parents__block reveal-up">
+            <svg viewBox="0 0 100 122" class="wp-couple" aria-hidden="true">
+              <ellipse class="wp-shadow" cx="50" cy="116" rx="42" ry="5" />
+              <g class="wp-figure wp-figure--bride">
+                <g class="wp-part wp-part--dress"><polygon points="16,20 32,20 28,46 44,110 4,110 20,46" /></g>
+                <g class="wp-part wp-part--arm-hang"><polygon points="14,22 10,22 6,46 10,46" /></g>
+                <g class="wp-part wp-part--arm-raise"><polygon points="30,22 34,22 48,4 44,4" /></g>
+                <polygon class="wp-head" points="24,2 30,6 30,14 24,18 18,14 18,6" />
+              </g>
+              <g transform="translate(54,0)">
+                <g class="wp-figure wp-figure--groom">
+                  <g class="wp-part wp-part--leg-l"><polygon points="18,50 26,50 24,106 14,106" /></g>
+                  <g class="wp-part wp-part--leg-r"><polygon points="26,50 34,50 38,106 28,106" /></g>
+                  <polygon class="wp-torso" points="16,20 32,20 28,50 20,50" />
+                  <g class="wp-part wp-part--arm-hang"><polygon points="34,22 38,22 42,46 38,46" /></g>
+                  <g class="wp-part wp-part--arm-raise"><polygon points="18,22 14,22 0,4 4,4" /></g>
+                  <polygon class="wp-head" points="24,2 30,6 30,14 24,18 18,14 18,6" />
+                </g>
+              </g>
+              <circle class="wp-hands" cx="51" cy="4" r="4" />
+            </svg>
+            <span class="eyebrow">Padres del novio</span>
+            <p class="parents__names">Alejandra Torres Ruiz<br />&amp;<br />Eduardo Martínez Vega</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== ITINERARIO ===================== -->
+      <section class="section section--light" id="itinerary">
+        <div class="container">
+          <p class="eyebrow reveal-up">Programa</p>
+          <h2 class="section-title reveal-up">Itinerario</h2>
+
+          <div class="timeline">
+            <div class="timeline__progress"></div>
+
+            <div class="timeline__item">
+              <div class="timeline__icon" data-icon="ceremony">
+                <svg viewBox="0 0 64 64" class="icon-line">
+                  <path d="M32 6l4 10h10l-8 7 3 11-9-6-9 6 3-11-8-7h10z" />
+                  <path d="M14 58h36" />
+                </svg>
+              </div>
+              <div class="timeline__body">
+                <span class="timeline__time">5:00 p.m.</span>
+                <h3>Ceremonia</h3>
+                <p>[Nombre del recinto religioso o civil]</p>
+              </div>
+            </div>
+
+            <div class="timeline__item">
+              <div class="timeline__icon" data-icon="toast">
+                <svg viewBox="0 0 64 64" class="icon-line icon-toast">
+                  <g class="glass glass--left">
+                    <path d="M20 8h10l-2 18a3 3 0 01-3 3 3 3 0 01-3-3z" />
+                    <path d="M25 29v16" />
+                    <path d="M18 45h14" />
+                  </g>
+                  <g class="glass glass--right">
+                    <path d="M34 8h10l-2 18a3 3 0 01-3 3 3 3 0 01-3-3z" />
+                    <path d="M39 29v16" />
+                    <path d="M32 45h14" />
+                  </g>
+                  <g class="sparkle">
+                    <path d="M32 6v4M28 10h8M32 12v3" />
+                  </g>
+                </svg>
+              </div>
+              <div class="timeline__body">
+                <span class="timeline__time">6:30 p.m.</span>
+                <h3>Recepción &amp; Brindis</h3>
+                <p>[Nombre del salón / jardín de eventos]</p>
+              </div>
+            </div>
+
+            <div class="timeline__item">
+              <div class="timeline__icon" data-icon="dinner">
+                <svg viewBox="0 0 64 64" class="icon-line icon-dinner">
+                  <circle cx="32" cy="38" r="14" />
+                  <circle cx="32" cy="38" r="7" />
+                  <path d="M14 22v12M14 22a3 3 0 013-3M14 22a3 3 0 00-3-3M50 22v30" />
+                  <g class="steam">
+                    <path class="steam__wisp steam__wisp--1" d="M28 20c-2-3 2-4 0-8" />
+                    <path class="steam__wisp steam__wisp--2" d="M34 20c-2-3 2-4 0-8" />
+                    <path class="steam__wisp steam__wisp--3" d="M40 20c-2-3 2-4 0-8" />
+                  </g>
+                </svg>
+              </div>
+              <div class="timeline__body">
+                <span class="timeline__time">7:30 p.m.</span>
+                <h3>Cena</h3>
+                <p>Menú por confirmar</p>
+              </div>
+            </div>
+
+            <div class="timeline__item">
+              <div class="timeline__icon timeline__icon--video">
+                <video class="mono" data-lazy-src="/assets/video/dance-loop.mp4" muted loop playsinline preload="none"></video>
+              </div>
+              <div class="timeline__body">
+                <span class="timeline__time">9:00 p.m.</span>
+                <h3>Baile</h3>
+                <p>Primer baile de los novios</p>
+              </div>
+            </div>
+
+            <div class="timeline__item">
+              <div class="timeline__icon" data-icon="fireworks">
+                <svg viewBox="0 0 64 64" class="icon-line icon-fireworks">
+                  <circle cx="32" cy="26" r="2" class="fw-center" />
+                  <g class="fx-firework" data-count="10"></g>
+                </svg>
+              </div>
+              <div class="timeline__body">
+                <span class="timeline__time">11:00 p.m.</span>
+                <h3>Fuegos artificiales</h3>
+                <p>Cierre de la noche</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== CÓDIGO DE VESTIMENTA ===================== -->
+      <section class="section section--dark section--waltz" id="dresscode">
+        <div class="container container--split">
+          <div class="waltz-stage reveal-up">
+            <video class="waltz-video mono" data-lazy-src="/assets/video/waltz.mp4" muted loop playsinline preload="none"></video>
+          </div>
+          <div class="dresscode__text">
+            <p class="eyebrow reveal-up">Código de vestimenta</p>
+            <h2 class="section-title reveal-up">Formal</h2>
+            <p class="reveal-up">
+              Los acompañamos en una velada elegante. Traje oscuro o esmoquin para
+              caballeros, vestido largo o de cóctel para damas.
+            </p>
+            <div class="dresscode__badges reveal-up">
+              <span class="badge">Se admiten niños</span>
+              <span class="badge">Música clásica en vivo</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Anuncio de música clásica: notas musicales flotantes -->
+        <div class="notes-banner">
+          <div class="notes-field" data-notes></div>
+          <p class="notes-banner__text reveal-up">Música clásica en vivo durante la velada</p>
+        </div>
+      </section>
+
+      <!-- ===================== INSPIRACIÓN DE VESTIMENTA ===================== -->
+      <section class="section section--dark section--wardrobe" id="wardrobe">
+        <div class="container container--narrow">
+          <p class="eyebrow reveal-up">Inspiración</p>
+          <h2 class="section-title reveal-up">Ideas de vestimenta</h2>
+        </div>
+
+        <div class="wardrobe__stage">
+          <svg viewBox="0 0 140 300" class="wardrobe-figure wardrobe-figure--man" aria-hidden="true">
+            <ellipse class="wardrobe-figure__shadow" cx="70" cy="294" rx="46" ry="6" />
+            <polygon class="wf-hair" points="59,10 81,10 78,4 62,4" />
+            <polygon class="wf-skin" points="70,10 82,17 82,33 70,40 58,33 58,17" />
+            <polygon class="wf-jacket" points="46,42 94,42 88,90 92,120 48,120 52,90" />
+            <polygon class="wf-shirt" points="63,44 77,44 70,70" />
+            <polygon class="wf-tie" points="68,46 72,46 74,68 66,68" />
+            <polygon class="wf-trouser" points="50,120 68,120 66,270 46,270" />
+            <polygon class="wf-trouser" points="72,120 90,120 94,270 74,270" />
+            <polygon class="wf-shoe" points="42,270 68,270 68,282 40,282" />
+            <polygon class="wf-shoe" points="72,270 96,270 98,282 70,282" />
+          </svg>
+
+          <a class="wardrobe__link" href="#" target="_blank" rel="noopener">
+            <span>Ideas de<br />vestimenta</span>
+          </a>
+
+          <svg viewBox="0 0 140 300" class="wardrobe-figure wardrobe-figure--woman" aria-hidden="true">
+            <ellipse class="wardrobe-figure__shadow" cx="70" cy="294" rx="46" ry="6" />
+            <polygon class="wf-hair-w" points="54,14 86,14 90,50 84,54 70,42 56,54 50,50" />
+            <polygon class="wf-skin" points="70,10 82,17 82,33 70,40 58,33 58,17" />
+            <polygon class="wf-dress" points="52,42 88,42 80,88 100,150 128,282 12,282 40,150 60,88" />
+            <polygon class="wf-belt" points="58,86 82,86 84,94 56,94" />
+          </svg>
+        </div>
+      </section>
+
+      <!-- ===================== UBICACIÓN / MAPA ANIMADO ===================== -->
+      <section class="section section--light" id="location">
+        <div class="container">
+          <p class="eyebrow reveal-up">Cómo llegar</p>
+          <h2 class="section-title reveal-up">Ubicación</h2>
+          <p class="reveal-up location__address">
+            Catedral Basílica de Nuestra Señora de la Luz<br />
+            Álvaro Obregón 112, Centro, 37000<br />
+            León de los Aldama, Gto. <span class="placeholder-note">(dirección temporal — reemplazar)</span>
+          </p>
+          <div class="map-reveal reveal-up" id="map-reveal">
+            <div class="map-reveal__pin">
+              <svg viewBox="0 0 24 32" class="icon-pin"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20c0-6.6-5.4-12-12-12zm0 16a4 4 0 110-8 4 4 0 010 8z" /></svg>
+            </div>
+            <iframe
+              class="map-reveal__frame"
+              title="Mapa de la ceremonia"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps?q=Catedral+Basílica+de+Nuestra+Señora+de+la+Luz,+León,+Guanajuato&output=embed"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== GALERÍA ===================== -->
+      <section class="section section--dark" id="gallery">
+        <div class="container">
+          <p class="eyebrow reveal-up">Momentos</p>
+          <h2 class="section-title reveal-up">Galería</h2>
+          <div class="gallery" id="gallery-grid">
+            <!-- Marcadores de imagen genéricos: sustituir por <img src="/assets/images/foto-N.jpg"> -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== MESA DE REGALOS ===================== -->
+      <section class="section section--light" id="gifts">
+        <div class="container container--narrow">
+          <p class="eyebrow reveal-up">Con cariño</p>
+          <h2 class="section-title reveal-up">Mesa de regalos</h2>
+          <p class="reveal-up">
+            Su presencia es nuestro mejor regalo. Si desean tener un detalle con
+            nosotros, dejamos algunas opciones.
+          </p>
+          <div class="gifts__grid reveal-up">
+            <a class="gift-card" href="#" data-store>
+              <span class="gift-card__name">[Tienda 1]</span>
+              <span class="gift-card__cta">Ir a tienda</span>
+            </a>
+            <a class="gift-card" href="#" data-store>
+              <span class="gift-card__name">[Tienda 2]</span>
+              <span class="gift-card__cta">Ir a tienda</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>[Novia] &amp; [Novio] · 15 de marzo, 2027</p>
+      </footer>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
