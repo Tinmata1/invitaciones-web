@@ -602,21 +602,21 @@ p {
 }
 
 /* ---- baile: video en miniatura circular ---- */
-.timeline__icon--video {
-  width: 5.4rem;
-  height: 5.4rem;
-  overflow: hidden;
-  padding: 0;
-  border-width: 2px;
-  border-color: var(--c-black);
-  background: var(--c-black);
+/* ---- baile: pareja en línea, se mece al entrar en vista ---- */
+.icon-waltz-mini__group {
+  transform-origin: 32px 40px;
 }
-.timeline__icon--video video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  filter: grayscale(1) contrast(1.15) brightness(1.15);
+.timeline__item.is-visible .icon-waltz-mini__group {
+  animation: waltz-mini-sway 2.2s ease-in-out infinite;
+}
+@keyframes waltz-mini-sway {
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
 }
 
 /* ---- fireworks ---- */

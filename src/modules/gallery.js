@@ -7,11 +7,13 @@ const CAMERA_ICON = `
   </svg>
 `;
 
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+
 // Fotos reales ya entregadas; el resto de las posiciones queda como
 // marcador genérico hasta que lleguen más fotografías.
 const REAL_PHOTOS = {
-  1: "/assets/images/foto-01.jpg",
-  2: "/assets/images/foto-02.jpg",
+  1: `${BASE}/assets/images/foto-01.jpg`,
+  2: `${BASE}/assets/images/foto-02.jpg`,
 };
 
 export function initGallery(count = 9) {

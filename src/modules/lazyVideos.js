@@ -27,7 +27,9 @@ export function initLazyVideos() {
         if (loading.has(video)) return;
         loading.add(video);
 
-        fetch(video.dataset.lazySrc)
+        const src = import.meta.env.BASE_URL.replace(/\/$/, "") + video.dataset.lazySrc;
+
+        fetch(src)
           .then((res) => res.blob())
           .then((blob) => {
             video.src = URL.createObjectURL(blob);

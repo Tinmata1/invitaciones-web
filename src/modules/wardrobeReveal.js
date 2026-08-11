@@ -11,15 +11,44 @@ export function initWardrobeReveal() {
 
   const scrollTrigger = { trigger: section, start: "top 78%", once: true };
 
+  // Balanceo continuo y sutil, como si posaran: arranca cuando termina
+  // la entrada de cada figura y ya no se detiene.
+  const idleSway = (target, delay) =>
+    gsap.to(target, {
+      y: -6,
+      rotate: 1.5,
+      duration: 2.6,
+      ease: "sine.inOut",
+      yoyo: true,
+      repeat: -1,
+      delay,
+    });
+
   gsap.fromTo(
     man,
     { opacity: 0, x: -60, rotate: -6 },
-    { opacity: 1, x: 0, rotate: 0, duration: 1, ease: "back.out(1.4)", scrollTrigger }
+    {
+      opacity: 1,
+      x: 0,
+      rotate: 0,
+      duration: 1,
+      ease: "back.out(1.4)",
+      scrollTrigger,
+      onComplete: () => idleSway(man, 0),
+    }
   );
   gsap.fromTo(
     woman,
     { opacity: 0, x: 60, rotate: 6 },
-    { opacity: 1, x: 0, rotate: 0, duration: 1, ease: "back.out(1.4)", scrollTrigger }
+    {
+      opacity: 1,
+      x: 0,
+      rotate: 0,
+      duration: 1,
+      ease: "back.out(1.4)",
+      scrollTrigger,
+      onComplete: () => idleSway(woman, 0.3),
+    }
   );
   gsap.fromTo(
     link,

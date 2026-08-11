@@ -36,3 +36,10 @@ initLoader({
     );
   },
 });
+
+// Las fuentes web y las imágenes pueden cambiar la altura de secciones
+// después de que ScrollTrigger ya midió la página, desalineando los
+// puntos de disparo de las animaciones más abajo (ej. últimas fotos
+// de la galería). Se vuelve a medir cuando todo terminó de cargar.
+document.fonts?.ready.then(() => ScrollTrigger.refresh());
+window.addEventListener("load", () => ScrollTrigger.refresh());
