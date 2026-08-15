@@ -1,387 +1,331 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>[Novia] & [Novio] · Invitación de Boda</title>
-    <meta name="description" content="Invitación digital de boda" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <!-- ===================== LOADER / PORTADA DE ENTRADA ===================== -->
-    <div id="loader" class="loader">
-      <div class="loader__frame">
-        <span class="loader__eyebrow">Nos casamos</span>
-        <h1 class="loader__names">
-          <span>[Novia]</span>
-          <span class="loader__amp">&amp;</span>
-          <span>[Novio]</span>
-        </h1>
-        <span class="loader__date">15 · 03 · 2027</span>
-        <button id="enter-btn" class="btn btn--outline" type="button">
-          <span>Abrir invitación</span>
-        </button>
-        <p class="loader__hint">Con sonido — música en vivo</p>
-      </div>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Invitación digital de boda · Elena & Martín · 15 de marzo, 2027">
+<title>Elena &amp; Martín · Invitación de Boda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  :root{
+    --ivory:#F5F0E6; --gold:#E9C46A; --gold-soft:#F2D492; --ink:#0B0B22;
+    --sky-top:#6B4A6E; --sky-bottom:#F0A868;
+    --display:"Fraunces",Georgia,serif; --body:"Jost",system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--body);color:var(--ivory);background:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+  .sky{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,var(--sky-top),var(--sky-bottom))}
+  .glow{position:fixed;left:50%;bottom:-25vh;transform:translateX(-50%);width:120vw;height:80vh;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse at center bottom,rgba(255,214,150,.9),rgba(255,180,120,.25) 40%,transparent 68%);filter:blur(6px)}
+  #stars,#petals{position:fixed;inset:0;z-index:2;pointer-events:none}
+  #stars{opacity:0}
+  .grain{position:fixed;inset:0;z-index:40;pointer-events:none;opacity:.06;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .vignette{position:fixed;inset:0;z-index:39;pointer-events:none;box-shadow:inset 0 0 220px 60px rgba(0,0,0,.5)}
+
+  main{position:relative;z-index:5}
+  section{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12vh 6vw;text-align:center;position:relative}
+  .eyebrow{font-size:clamp(.62rem,1.6vw,.78rem);letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:1.4rem;display:inline-flex;align-items:center;gap:1rem}
+  .eyebrow::before,.eyebrow::after{content:"";width:34px;height:1px;background:var(--gold);opacity:.5}
+  h1,h2{font-family:var(--display);font-weight:300;line-height:1;letter-spacing:-.01em}
+  .amp{font-style:italic;color:var(--gold-soft);font-weight:300}
+  p{font-weight:300;line-height:1.7;color:rgba(245,240,230,.82)}
+
+  /* Preloader */
+  .preloader{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    background:linear-gradient(180deg,#2A1E3F,#0B0B22);padding:8vw}
+  .pre-names{font-family:var(--display);font-weight:300;font-size:clamp(2.6rem,9vw,6rem);line-height:1.05;margin:.6rem 0 1.4rem}
+  .pre-date{font-size:.8rem;letter-spacing:.5em;color:var(--gold);text-transform:uppercase;margin-bottom:3rem}
+  .open-btn{font-family:var(--body);font-size:.72rem;letter-spacing:.35em;text-transform:uppercase;color:var(--ivory);background:transparent;
+    border:1px solid rgba(233,196,106,.6);padding:1.15rem 2.6rem;border-radius:40px;cursor:pointer;overflow:hidden;position:relative;transition:color .5s}
+  .open-btn span{position:relative;z-index:2}
+  .open-btn::before{content:"";position:absolute;inset:0;background:var(--gold);transform:translateY(101%);transition:transform .5s cubic-bezier(.7,0,.2,1);z-index:1}
+  .open-btn:hover{color:var(--ink)} .open-btn:hover::before{transform:translateY(0)}
+  .pre-hint{margin-top:2.5rem;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(245,240,230,.4)}
+
+  /* Hero with video */
+  .hero{overflow:hidden}
+  .hero-media{position:absolute;inset:0;z-index:-1;overflow:hidden}
+  .hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;will-change:transform}
+  .hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,34,.45),rgba(11,11,34,.25) 40%,rgba(11,11,34,.75))}
+  .hero-eyebrow{opacity:0}
+  .hero-names{font-family:var(--display);font-weight:300;font-size:clamp(3.2rem,13vw,10rem);line-height:.94;text-shadow:0 4px 40px rgba(0,0,0,.4)}
+  .hero-names .line{overflow:hidden;display:block}
+  .char{display:inline-block;transform:translateY(110%);will-change:transform}
+  .hero-sub{margin-top:2rem;max-width:34ch;opacity:0}
+  .scroll-cue{position:absolute;bottom:4vh;left:50%;transform:translateX(-50%);font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(245,240,230,.7);display:flex;flex-direction:column;align-items:center;gap:.9rem;opacity:0}
+  .chev{width:1px;height:42px;background:linear-gradient(var(--gold),transparent);position:relative;overflow:hidden}
+  .chev::after{content:"";position:absolute;top:0;left:0;width:100%;height:40%;background:var(--gold);animation:cue 2s ease-in-out infinite}
+  @keyframes cue{0%{transform:translateY(-100%)}100%{transform:translateY(320%)}}
+
+  /* Countdown */
+  h2{font-size:clamp(2.2rem,6vw,4.2rem);margin:.4rem 0 3rem}
+  .count{display:flex;gap:clamp(1rem,5vw,4rem);flex-wrap:wrap;justify-content:center}
+  .unit{display:flex;flex-direction:column;align-items:center;min-width:74px}
+  .num{font-family:var(--display);font-weight:300;font-size:clamp(2.6rem,8vw,5.5rem);line-height:1;font-variant-numeric:tabular-nums;color:var(--gold-soft)}
+  .lab{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(245,240,230,.6);margin-top:.7rem}
+  .date-line{margin-top:3rem;font-size:.8rem;letter-spacing:.25em;color:rgba(245,240,230,.75)}
+
+  /* Blessing */
+  .divider{width:min(340px,60vw);height:40px;margin:0 auto 3rem}
+  .divider path{fill:none;stroke:var(--gold);stroke-width:1.2}
+  .parents{display:flex;gap:clamp(2rem,10vw,7rem);flex-wrap:wrap;justify-content:center;margin-top:1rem}
+  .parents .col{max-width:26ch}
+  .parents .role{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+  .parents .names{font-family:var(--display);font-size:1.35rem;font-weight:300;line-height:1.7}
+
+  /* Itinerary */
+  .timeline{position:relative;width:min(760px,92vw);margin:1rem auto 0}
+  .line{position:absolute;left:50%;top:0;width:1px;height:100%;background:rgba(233,196,106,.25);transform:translateX(-50%)}
+  .line-fill{position:absolute;left:50%;top:0;width:1px;height:100%;background:var(--gold);transform:translateX(-50%) scaleY(0);transform-origin:top}
+  .stop{position:relative;display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;margin:3.2rem 0}
+  .stop .card{opacity:0}
+  .stop.left .card{grid-column:1;text-align:right;transform:translateX(-40px)}
+  .stop.right .card{grid-column:3;text-align:left;transform:translateX(40px)}
+  .dot{grid-column:2;width:11px;height:11px;border-radius:50%;background:var(--ink);border:1px solid var(--gold);margin:0 auto;z-index:2;transition:background .4s}
+  .stop.on .dot{background:var(--gold);box-shadow:0 0 16px var(--gold)}
+  .time{font-family:var(--display);font-style:italic;color:var(--gold-soft);font-size:1.5rem}
+  .ev{font-family:var(--display);font-size:1.3rem;font-weight:400;margin:.15rem 0 .3rem}
+  .ev-sub{font-size:.82rem;color:rgba(245,240,230,.6)}
+
+  /* Gallery */
+  .gallery{height:100vh;overflow:hidden;padding:0}
+  .track{display:flex;height:100%;align-items:center;padding:0 8vw;gap:3vw;will-change:transform}
+  .frame{flex:0 0 auto;width:min(70vw,420px);height:66vh;border-radius:4px;overflow:hidden;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  .frame .media{position:absolute;inset:-8% -6%;width:112%;height:116%;object-fit:cover;will-change:transform}
+  .frame .cap{position:absolute;left:0;bottom:0;right:0;padding:1.4rem;background:linear-gradient(transparent,rgba(0,0,0,.65));font-family:var(--display);font-style:italic;font-size:1.1rem;text-align:left;z-index:2}
+  .gallery .intro{flex:0 0 auto;width:min(60vw,340px);text-align:left}
+
+  /* Finale */
+  .finale{gap:1.2rem}
+  #fireworks{position:absolute;inset:0;z-index:1;pointer-events:none}
+  .finale .inner{position:relative;z-index:3}
+  .finale .hero-names{font-size:clamp(2.8rem,11vw,8rem);text-shadow:none}
+  .finale .await{font-size:.72rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-top:1.5rem}
+
+  /* Audio toggle */
+  .audio-btn{position:fixed;top:1.4rem;right:1.4rem;z-index:60;width:44px;height:44px;border-radius:50%;border:1px solid rgba(233,196,106,.5);
+    background:rgba(11,11,34,.4);backdrop-filter:blur(6px);cursor:pointer;display:none;align-items:center;justify-content:center;gap:2px}
+  .audio-btn span{display:block;width:2px;background:var(--gold);border-radius:2px;transition:height .3s}
+  .audio-btn .b1{height:8px}.audio-btn .b2{height:16px}.audio-btn .b3{height:11px}
+  .audio-btn.paused .b1,.audio-btn.paused .b2,.audio-btn.paused .b3{height:4px}
+
+  .reveal{opacity:0}
+
+  @media (max-width:640px){
+    .frame{width:80vw}
+    .stop{grid-template-columns:22px 1fr;gap:1rem}
+    .line,.line-fill{left:11px}
+    .dot{grid-column:1}
+    .stop.left .card,.stop.right .card{grid-column:2;text-align:left;transform:translateX(30px)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .char{transform:none}.reveal,.hero-eyebrow,.hero-sub,.scroll-cue,.stop .card{opacity:1}
+  }
+</style>
+</head>
+<body>
+
+<div class="sky"></div>
+<div class="glow"></div>
+<canvas id="stars"></canvas>
+<canvas id="petals"></canvas>
+<div class="grain"></div>
+<div class="vignette"></div>
+
+<audio id="audio" loop preload="none" src="assets/audio/musica.mp3"></audio>
+<button class="audio-btn paused" id="audioBtn" aria-label="Música"><span class="b1"></span><span class="b2"></span><span class="b3"></span></button>
+
+<div class="preloader" id="preloader">
+  <div class="eyebrow">Nos casamos</div>
+  <div class="pre-names">Elena <span class="amp">&amp;</span> Martín</div>
+  <div class="pre-date">15 · 03 · 2027</div>
+  <button class="open-btn" id="openBtn"><span>Abrir invitación</span></button>
+  <div class="pre-hint">Con música · sube el volumen</div>
+</div>
+
+<main>
+  <section class="hero">
+    <div class="hero-media">
+      <video id="heroVideo" poster="assets/img/hero-poster.jpg" muted loop playsinline preload="auto">
+        <source src="assets/video/hero.mp4" type="video/mp4">
+      </video>
     </div>
+    <div class="eyebrow hero-eyebrow">Celebra el inicio de nuestra historia</div>
+    <div class="hero-names">
+      <span class="line" data-word="Elena"></span>
+      <span class="line"><span class="amp">&amp;</span></span>
+      <span class="line" data-word="Martín"></span>
+    </div>
+    <p class="hero-sub">Un solo día, una sola noche, y todas las personas que queremos en el mismo lugar.</p>
+    <div class="scroll-cue">Desliza<div class="chev"></div></div>
+  </section>
 
-    <!-- Botón flotante de música -->
-    <button id="music-toggle" class="music-toggle" type="button" aria-pressed="true" aria-label="Silenciar música">
-      <svg viewBox="0 0 24 24" class="icon-note-mini"><path d="M9 18V5l11-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="17" cy="16" r="3" /></svg>
-    </button>
-    <audio id="bg-music" src="/assets/audio/musica.mp3" loop preload="auto"></audio>
+  <section>
+    <div class="eyebrow reveal">Falta muy poco</div>
+    <h2 class="reveal">Nuestra boda</h2>
+    <div class="count">
+      <div class="unit reveal"><div class="num" id="d">00</div><div class="lab">Días</div></div>
+      <div class="unit reveal"><div class="num" id="h">00</div><div class="lab">Horas</div></div>
+      <div class="unit reveal"><div class="num" id="m">00</div><div class="lab">Min</div></div>
+      <div class="unit reveal"><div class="num" id="s">00</div><div class="lab">Seg</div></div>
+    </div>
+    <div class="date-line reveal">Sábado 15 de marzo, 2027 · 5:00 p.m.</div>
+  </section>
 
-    <main id="app">
-      <!-- ===================== HERO / VIDEO SCROLL-SCRUB ===================== -->
-      <section class="hero" id="hero" data-scroll-video-section>
-        <div class="hero__pin">
-          <video
-            id="hero-video"
-            class="hero__video mono"
-            src="/assets/video/hero.mp4"
-            poster="/assets/images/foto-01.jpg"
-            muted
-            loop
-            playsinline
-            autoplay
-            preload="auto"
-          ></video>
-          <div class="hero__fallback" aria-hidden="true">
-            <div class="hero__fallback-monogram">[N] &amp; [N]</div>
-          </div>
-          <div class="hero__overlay"></div>
-          <div class="hero__content">
-            <span class="eyebrow">Nos casamos</span>
-            <h1 class="hero__title">[Novia] &amp; [Novio]</h1>
-            <p class="hero__subtitle">Celebra con nosotros el inicio de nuestra historia</p>
-          </div>
-          <div class="scroll-cue">
-            <span></span>
-            Desliza para comenzar
-          </div>
-        </div>
-      </section>
+  <section>
+    <svg class="divider reveal" viewBox="0 0 340 40" preserveAspectRatio="xMidYMid meet">
+      <path d="M10 20 Q 90 0 170 20 Q 250 40 330 20"/>
+      <path d="M170 8 L170 32 M162 20 L178 20" stroke-width="1"/>
+    </svg>
+    <div class="eyebrow reveal">Con la bendición de Dios</div>
+    <h2 class="reveal">y de nuestros padres</h2>
+    <div class="parents">
+      <div class="col reveal"><div class="role">Padres de la novia</div>
+        <div class="names">María Fernanda López Ibarra<br><span class="amp">&amp;</span><br>Roberto Sánchez García</div></div>
+      <div class="col reveal"><div class="role">Padres del novio</div>
+        <div class="names">Alejandra Torres Ruiz<br><span class="amp">&amp;</span><br>Eduardo Martínez Vega</div></div>
+    </div>
+  </section>
 
-      <!-- ===================== CONTADOR ===================== -->
-      <section class="section section--dark" id="countdown-section">
-        <div class="container">
-          <p class="eyebrow reveal-up">Falta muy poco</p>
-          <h2 class="section-title reveal-up">Nuestra boda</h2>
-          <div class="countdown" id="countdown" data-target="2027-03-15T17:00:00">
-            <div class="countdown__item reveal-up">
-              <span class="countdown__value" data-unit="days">00</span>
-              <span class="countdown__label">Días</span>
-            </div>
-            <div class="countdown__item reveal-up">
-              <span class="countdown__value" data-unit="hours">00</span>
-              <span class="countdown__label">Horas</span>
-            </div>
-            <div class="countdown__item reveal-up">
-              <span class="countdown__value" data-unit="minutes">00</span>
-              <span class="countdown__label">Min</span>
-            </div>
-            <div class="countdown__item reveal-up">
-              <span class="countdown__value" data-unit="seconds">00</span>
-              <span class="countdown__label">Seg</span>
-            </div>
-          </div>
-          <p class="countdown__date reveal-up">Sábado 15 de marzo, 2027 · 5:00 p.m.</p>
-        </div>
-      </section>
+  <section>
+    <div class="eyebrow reveal">El plan de la noche</div>
+    <h2 class="reveal">Itinerario</h2>
+    <div class="timeline">
+      <div class="line"></div><div class="line-fill" id="lineFill"></div>
+      <div class="stop left"><div class="card"><div class="time">5:00</div><div class="ev">Ceremonia</div><div class="ev-sub">Catedral Basílica de N. S. de la Luz</div></div><div class="dot"></div><div></div></div>
+      <div class="stop right"><div></div><div class="dot"></div><div class="card"><div class="time">6:30</div><div class="ev">Recepción &amp; Brindis</div><div class="ev-sub">Salón / jardín de eventos</div></div></div>
+      <div class="stop left"><div class="card"><div class="time">7:30</div><div class="ev">Cena</div><div class="ev-sub">Menú de tres tiempos</div></div><div class="dot"></div><div></div></div>
+      <div class="stop right"><div></div><div class="dot"></div><div class="card"><div class="time">9:00</div><div class="ev">Baile</div><div class="ev-sub">Primer baile de los novios</div></div></div>
+      <div class="stop left"><div class="card"><div class="time">11:00</div><div class="ev">Fuegos artificiales</div><div class="ev-sub">Cierre de la noche</div></div><div class="dot"></div><div></div></div>
+    </div>
+  </section>
 
-      <!-- ===================== BENDICIÓN Y PADRES ===================== -->
-      <section class="section section--dark section--blessing" id="blessing">
-        <div class="container container--narrow">
-          <p class="eyebrow reveal-up">Con la bendición de Dios</p>
-          <h2 class="section-title reveal-up">y de nuestros padres</h2>
-        </div>
+  <section class="gallery" id="gallery">
+    <div class="track" id="track">
+      <div class="intro">
+        <div class="eyebrow">Momentos</div>
+        <h2 style="text-align:left;font-size:clamp(2rem,5vw,3.4rem)">Nuestra<br>historia</h2>
+      </div>
+      <div class="frame"><img class="media" src="assets/img/risa.jpg" alt="Risas"><div class="cap">Las risas que nos definen</div></div>
+      <div class="frame"><video class="media" src="assets/video/momento1.mp4" muted loop playsinline autoplay></video><div class="cap">Nuestra historia en movimiento</div></div>
+      <div class="frame"><img class="media" src="assets/img/baile.jpg" alt="Baile"><div class="cap">El primer baile</div></div>
+      <div class="frame"><video class="media" src="assets/video/momento2.mp4" muted loop playsinline autoplay></video><div class="cap">Y lo que viene</div></div>
+    </div>
+  </section>
 
-        <div class="container container--split parents">
-          <div class="parents__block reveal-up">
-            <svg viewBox="0 0 100 122" class="wp-couple" aria-hidden="true">
-              <ellipse class="wp-shadow" cx="50" cy="116" rx="42" ry="5" />
-              <g class="wp-figure wp-figure--bride">
-                <g class="wp-part wp-part--dress"><polygon points="16,20 32,20 28,46 44,110 4,110 20,46" /></g>
-                <g class="wp-part wp-part--arm-hang"><polygon points="14,22 10,22 6,46 10,46" /></g>
-                <g class="wp-part wp-part--arm-raise"><polygon points="30,22 34,22 48,4 44,4" /></g>
-                <polygon class="wp-head" points="24,2 30,6 30,14 24,18 18,14 18,6" />
-              </g>
-              <g transform="translate(54,0)">
-                <g class="wp-figure wp-figure--groom">
-                  <g class="wp-part wp-part--leg-l"><polygon points="18,50 26,50 24,106 14,106" /></g>
-                  <g class="wp-part wp-part--leg-r"><polygon points="26,50 34,50 38,106 28,106" /></g>
-                  <polygon class="wp-torso" points="16,20 32,20 28,50 20,50" />
-                  <g class="wp-part wp-part--arm-hang"><polygon points="34,22 38,22 42,46 38,46" /></g>
-                  <g class="wp-part wp-part--arm-raise"><polygon points="18,22 14,22 0,4 4,4" /></g>
-                  <polygon class="wp-head" points="24,2 30,6 30,14 24,18 18,14 18,6" />
-                </g>
-              </g>
-              <circle class="wp-hands" cx="51" cy="4" r="4" />
-            </svg>
-            <span class="eyebrow">Padres de la novia</span>
-            <p class="parents__names">María Fernanda López Ibarra<br />&amp;<br />Roberto Sánchez García</p>
-          </div>
-          <div class="parents__block reveal-up">
-            <svg viewBox="0 0 100 122" class="wp-couple" aria-hidden="true">
-              <ellipse class="wp-shadow" cx="50" cy="116" rx="42" ry="5" />
-              <g class="wp-figure wp-figure--bride">
-                <g class="wp-part wp-part--dress"><polygon points="16,20 32,20 28,46 44,110 4,110 20,46" /></g>
-                <g class="wp-part wp-part--arm-hang"><polygon points="14,22 10,22 6,46 10,46" /></g>
-                <g class="wp-part wp-part--arm-raise"><polygon points="30,22 34,22 48,4 44,4" /></g>
-                <polygon class="wp-head" points="24,2 30,6 30,14 24,18 18,14 18,6" />
-              </g>
-              <g transform="translate(54,0)">
-                <g class="wp-figure wp-figure--groom">
-                  <g class="wp-part wp-part--leg-l"><polygon points="18,50 26,50 24,106 14,106" /></g>
-                  <g class="wp-part wp-part--leg-r"><polygon points="26,50 34,50 38,106 28,106" /></g>
-                  <polygon class="wp-torso" points="16,20 32,20 28,50 20,50" />
-                  <g class="wp-part wp-part--arm-hang"><polygon points="34,22 38,22 42,46 38,46" /></g>
-                  <g class="wp-part wp-part--arm-raise"><polygon points="18,22 14,22 0,4 4,4" /></g>
-                  <polygon class="wp-head" points="24,2 30,6 30,14 24,18 18,14 18,6" />
-                </g>
-              </g>
-              <circle class="wp-hands" cx="51" cy="4" r="4" />
-            </svg>
-            <span class="eyebrow">Padres del novio</span>
-            <p class="parents__names">Alejandra Torres Ruiz<br />&amp;<br />Eduardo Martínez Vega</p>
-          </div>
-        </div>
-      </section>
+  <section class="finale">
+    <canvas id="fireworks"></canvas>
+    <div class="inner">
+      <div class="eyebrow reveal">Te esperamos</div>
+      <div class="hero-names reveal">Elena <span class="amp">&amp;</span> Martín</div>
+      <div class="await reveal">15 de marzo, 2027 · León, Gto.</div>
+    </div>
+  </section>
+</main>
 
-      <!-- ===================== ITINERARIO ===================== -->
-      <section class="section section--light" id="itinerary">
-        <div class="container">
-          <p class="eyebrow reveal-up">Programa</p>
-          <h2 class="section-title reveal-up">Itinerario</h2>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-          <div class="timeline">
-            <div class="timeline__progress"></div>
+/* Sky journey */
+const skyStops=[{top:"#6B4A6E",bot:"#F0A868"},{top:"#3B2C52",bot:"#C77E5A"},{top:"#241A3A",bot:"#6B4568"},{top:"#131029",bot:"#2E2350"},{top:"#0A0A1E",bot:"#17123A"},{top:"#05050F",bot:"#0B0B22"}];
+const hx=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+const mix=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+const rgb=a=>`rgb(${a[0]},${a[1]},${a[2]})`;
+const sky=document.querySelector(".sky"),glow=document.querySelector(".glow"),starsC=document.getElementById("stars");
+function paintSky(p){
+  const seg=(skyStops.length-1)*p,i=Math.min(Math.floor(seg),skyStops.length-2),t=seg-i;
+  sky.style.setProperty("--sky-top",rgb(mix(hx(skyStops[i].top),hx(skyStops[i+1].top),t)));
+  sky.style.setProperty("--sky-bottom",rgb(mix(hx(skyStops[i].bot),hx(skyStops[i+1].bot),t)));
+  sky.style.background="linear-gradient(180deg,var(--sky-top),var(--sky-bottom))";
+  glow.style.opacity=Math.max(0,1-p*2.1);
+  starsC.style.opacity=Math.min(1,Math.max(0,(p-.35)/.35));
+}
+paintSky(0);
+ScrollTrigger.create({trigger:"body",start:"top top",end:"bottom bottom",scrub:true,onUpdate:s=>paintSky(s.progress)});
 
-            <div class="timeline__item">
-              <div class="timeline__icon" data-icon="ceremony">
-                <svg viewBox="0 0 64 64" class="icon-line">
-                  <path d="M32 6l4 10h10l-8 7 3 11-9-6-9 6 3-11-8-7h10z" />
-                  <path d="M14 58h36" />
-                </svg>
-              </div>
-              <div class="timeline__body">
-                <span class="timeline__time">5:00 p.m.</span>
-                <h3>Ceremonia</h3>
-                <p>[Nombre del recinto religioso o civil]</p>
-              </div>
-            </div>
+/* Stars */
+const sc=starsC.getContext("2d");let stars=[];
+function sizeStars(){starsC.width=innerWidth;starsC.height=innerHeight;stars=Array.from({length:reduce?40:130},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.3+.2,tw:Math.random()*6.28}));}
+sizeStars();addEventListener("resize",sizeStars);
+(function d(){sc.clearRect(0,0,starsC.width,starsC.height);stars.forEach(s=>{s.tw+=.03;sc.globalAlpha=.5+Math.sin(s.tw)*.5;sc.fillStyle="#fff";sc.beginPath();sc.arc(s.x,s.y,s.r,0,7);sc.fill();});requestAnimationFrame(d);})();
 
-            <div class="timeline__item">
-              <div class="timeline__icon" data-icon="toast">
-                <svg viewBox="0 0 64 64" class="icon-line icon-toast">
-                  <g class="glass glass--left">
-                    <path d="M20 8h10l-2 18a3 3 0 01-3 3 3 3 0 01-3-3z" />
-                    <path d="M25 29v16" />
-                    <path d="M18 45h14" />
-                  </g>
-                  <g class="glass glass--right">
-                    <path d="M34 8h10l-2 18a3 3 0 01-3 3 3 3 0 01-3-3z" />
-                    <path d="M39 29v16" />
-                    <path d="M32 45h14" />
-                  </g>
-                  <g class="sparkle">
-                    <path d="M32 6v4M28 10h8M32 12v3" />
-                  </g>
-                </svg>
-              </div>
-              <div class="timeline__body">
-                <span class="timeline__time">6:30 p.m.</span>
-                <h3>Recepción &amp; Brindis</h3>
-                <p>[Nombre del salón / jardín de eventos]</p>
-              </div>
-            </div>
+/* Petals */
+const pc=document.getElementById("petals"),pctx=pc.getContext("2d");let petals=[],petalFade=1;
+function sizeP(){pc.width=innerWidth;pc.height=innerHeight;}sizeP();addEventListener("resize",sizeP);
+function mk(){return{x:Math.random()*innerWidth,y:-20,s:Math.random()*7+5,vy:Math.random()*.8+.4,vx:Math.random()*.6-.3,rot:Math.random()*6,vr:Math.random()*.04-.02,c:["#F2D492","#E9C46A","#E8A87C","#F5F0E6"][Math.floor(Math.random()*4)],o:Math.random()*.5+.4};}
+if(!reduce)petals=Array.from({length:26},mk);
+ScrollTrigger.create({trigger:"body",start:"top top",end:"bottom bottom",scrub:true,onUpdate:s=>petalFade=Math.max(0,1-s.progress*1.6)});
+(function d(){pctx.clearRect(0,0,pc.width,pc.height);petals.forEach(p=>{p.y+=p.vy;p.x+=p.vx;p.rot+=p.vr;if(p.y>innerHeight+20)Object.assign(p,mk());pctx.save();pctx.translate(p.x,p.y);pctx.rotate(p.rot);pctx.globalAlpha=p.o*petalFade;pctx.fillStyle=p.c;pctx.beginPath();pctx.ellipse(0,0,p.s,p.s*.5,0,0,7);pctx.fill();pctx.restore();});requestAnimationFrame(d);})();
 
-            <div class="timeline__item">
-              <div class="timeline__icon" data-icon="dinner">
-                <svg viewBox="0 0 64 64" class="icon-line icon-dinner">
-                  <circle cx="32" cy="38" r="14" />
-                  <circle cx="32" cy="38" r="7" />
-                  <path d="M14 22v12M14 22a3 3 0 013-3M14 22a3 3 0 00-3-3M50 22v30" />
-                  <g class="steam">
-                    <path class="steam__wisp steam__wisp--1" d="M28 20c-2-3 2-4 0-8" />
-                    <path class="steam__wisp steam__wisp--2" d="M34 20c-2-3 2-4 0-8" />
-                    <path class="steam__wisp steam__wisp--3" d="M40 20c-2-3 2-4 0-8" />
-                  </g>
-                </svg>
-              </div>
-              <div class="timeline__body">
-                <span class="timeline__time">7:30 p.m.</span>
-                <h3>Cena</h3>
-                <p>Menú por confirmar</p>
-              </div>
-            </div>
+/* Countdown */
+const target=new Date("2027-03-15T17:00:00").getTime(),pad=n=>String(n).padStart(2,"0");
+setInterval(()=>{let dt=target-Date.now();if(dt<0)dt=0;d.textContent=pad(Math.floor(dt/864e5));h.textContent=pad(Math.floor(dt/36e5)%24);m.textContent=pad(Math.floor(dt/6e4)%60);s.textContent=pad(Math.floor(dt/1e3)%60);},1000);
 
-            <div class="timeline__item">
-              <div class="timeline__icon" data-icon="dance">
-                <svg viewBox="0 0 64 64" class="icon-line icon-waltz-mini">
-                  <g class="icon-waltz-mini__group">
-                    <circle cx="26" cy="14" r="3" />
-                    <path d="M29 18v6c-6 2-8 8-8 16h16c0-8-2-14-8-16z" />
-                    <circle cx="40" cy="12" r="3" />
-                    <path d="M43 16v8l6 12M43 24l-8 4" />
-                  </g>
-                </svg>
-              </div>
-              <div class="timeline__body">
-                <span class="timeline__time">9:00 p.m.</span>
-                <h3>Baile</h3>
-                <p>Primer baile de los novios</p>
-              </div>
-            </div>
+/* Split names */
+document.querySelectorAll(".hero-names .line[data-word]").forEach(l=>{l.innerHTML=[...l.dataset.word].map(c=>`<span class="char">${c===" "?"&nbsp;":c}</span>`).join("");});
 
-            <div class="timeline__item">
-              <div class="timeline__icon" data-icon="fireworks">
-                <svg viewBox="0 0 64 64" class="icon-line icon-fireworks">
-                  <circle cx="32" cy="26" r="2" class="fw-center" />
-                  <g class="fx-firework" data-count="10"></g>
-                </svg>
-              </div>
-              <div class="timeline__body">
-                <span class="timeline__time">11:00 p.m.</span>
-                <h3>Fuegos artificiales</h3>
-                <p>Cierre de la noche</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+/* Intro */
+function playIntro(){
+  const v=document.getElementById("heroVideo");if(v)v.play().catch(()=>{});
+  if(reduce)return;
+  gsap.to(".hero .char",{y:0,duration:1.1,ease:"power4.out",stagger:.045,delay:.2});
+  gsap.to(".hero-eyebrow",{opacity:1,duration:1,delay:.1});
+  gsap.fromTo(".hero-sub",{y:20},{opacity:1,y:0,duration:1,delay:1});
+  gsap.to(".scroll-cue",{opacity:1,duration:1,delay:1.6});
+}
+document.getElementById("openBtn").addEventListener("click",()=>{
+  const a=document.getElementById("audio"),btn=document.getElementById("audioBtn");
+  a.play().then(()=>{btn.style.display="flex";btn.classList.remove("paused");}).catch(()=>{btn.style.display="flex";});
+  gsap.timeline().to("#preloader",{clipPath:"inset(0 0 100% 0)",duration:1.1,ease:"power4.inOut"})
+    .set("#preloader",{display:"none"}).add(playIntro,"-=0.3");
+});
+gsap.set("#preloader",{clipPath:"inset(0 0 0% 0)"});
 
-      <!-- ===================== CÓDIGO DE VESTIMENTA ===================== -->
-      <section class="section section--dark section--waltz" id="dresscode">
-        <div class="container container--split">
-          <div class="waltz-stage reveal-up">
-            <video class="waltz-video mono" data-lazy-src="/assets/video/waltz.mp4" muted loop playsinline preload="none"></video>
-          </div>
-          <div class="dresscode__text">
-            <p class="eyebrow reveal-up">Código de vestimenta</p>
-            <h2 class="section-title reveal-up">Formal</h2>
-            <p class="reveal-up">
-              Los acompañamos en una velada elegante. Traje oscuro o esmoquin para
-              caballeros, vestido largo o de cóctel para damas.
-            </p>
-            <div class="dresscode__badges reveal-up">
-              <span class="badge">Se admiten niños</span>
-              <span class="badge">Música clásica en vivo</span>
-            </div>
-          </div>
-        </div>
+/* Audio toggle */
+document.getElementById("audioBtn").addEventListener("click",()=>{
+  const a=document.getElementById("audio"),btn=document.getElementById("audioBtn");
+  if(a.paused){a.play();btn.classList.remove("paused");}else{a.pause();btn.classList.add("paused");}
+});
 
-        <!-- Anuncio de música clásica: notas musicales flotantes -->
-        <div class="notes-banner">
-          <div class="notes-field" data-notes></div>
-          <p class="notes-banner__text reveal-up">Música clásica en vivo durante la velada</p>
-        </div>
-      </section>
+/* Hero parallax + darken on scroll */
+gsap.to(".hero-media video",{scale:1.18,ease:"none",scrollTrigger:{trigger:".hero",start:"top top",end:"bottom top",scrub:true}});
+gsap.to(".hero-names, .hero-sub, .hero-eyebrow",{y:-80,opacity:0,ease:"none",scrollTrigger:{trigger:".hero",start:"top top",end:"bottom top",scrub:true}});
 
-      <!-- ===================== INSPIRACIÓN DE VESTIMENTA ===================== -->
-      <section class="section section--dark section--wardrobe" id="wardrobe">
-        <div class="container container--narrow">
-          <p class="eyebrow reveal-up">Inspiración</p>
-          <h2 class="section-title reveal-up">Ideas de vestimenta</h2>
-        </div>
+/* Reveals */
+gsap.utils.toArray(".reveal").forEach(el=>gsap.fromTo(el,{opacity:0,y:34},{opacity:1,y:0,duration:1,ease:"power3.out",scrollTrigger:{trigger:el,start:"top 85%"}}));
 
-        <div class="wardrobe__stage">
-          <svg viewBox="0 0 140 300" class="wardrobe-figure wardrobe-figure--man" aria-hidden="true">
-            <ellipse class="wardrobe-figure__shadow" cx="70" cy="294" rx="46" ry="6" />
-            <polygon class="wf-hair" points="59,10 81,10 78,4 62,4" />
-            <polygon class="wf-skin" points="70,10 82,17 82,33 70,40 58,33 58,17" />
-            <polygon class="wf-jacket" points="46,42 94,42 88,90 92,120 48,120 52,90" />
-            <polygon class="wf-shirt" points="63,44 77,44 70,70" />
-            <polygon class="wf-tie" points="68,46 72,46 74,68 66,68" />
-            <polygon class="wf-trouser" points="50,120 68,120 66,270 46,270" />
-            <polygon class="wf-trouser" points="72,120 90,120 94,270 74,270" />
-            <polygon class="wf-shoe" points="42,270 68,270 68,282 40,282" />
-            <polygon class="wf-shoe" points="72,270 96,270 98,282 70,282" />
-          </svg>
+/* Divider draw */
+document.querySelectorAll(".divider path").forEach(p=>{const len=p.getTotalLength();p.style.strokeDasharray=len;p.style.strokeDashoffset=len;gsap.to(p,{strokeDashoffset:0,duration:1.6,ease:"power2.out",scrollTrigger:{trigger:".divider",start:"top 80%"}});});
 
-          <a class="wardrobe__link" href="#" target="_blank" rel="noopener">
-            <span>Ideas de<br />vestimenta</span>
-          </a>
+/* Itinerary */
+gsap.to("#lineFill",{scaleY:1,ease:"none",scrollTrigger:{trigger:".timeline",start:"top 60%",end:"bottom 70%",scrub:true}});
+gsap.utils.toArray(".stop").forEach(st=>gsap.to(st.querySelector(".card"),{opacity:1,x:0,duration:.9,ease:"power3.out",scrollTrigger:{trigger:st,start:"top 80%",onEnter:()=>st.classList.add("on"),onLeaveBack:()=>st.classList.remove("on")}}));
 
-          <svg viewBox="0 0 140 300" class="wardrobe-figure wardrobe-figure--woman" aria-hidden="true">
-            <ellipse class="wardrobe-figure__shadow" cx="70" cy="294" rx="46" ry="6" />
-            <polygon class="wf-hair-w" points="54,14 86,14 90,50 84,54 70,42 56,54 50,50" />
-            <polygon class="wf-skin" points="70,10 82,17 82,33 70,40 58,33 58,17" />
-            <polygon class="wf-dress" points="52,42 88,42 80,88 100,150 128,282 12,282 40,150 60,88" />
-            <polygon class="wf-belt" points="58,86 82,86 84,94 56,94" />
-          </svg>
-        </div>
-      </section>
+/* Gallery horizontal + parallax */
+(function(){
+  const track=document.getElementById("track");
+  const dist=()=>track.scrollWidth-innerWidth;
+  const horiz=gsap.to(track,{x:()=>-dist(),ease:"none",scrollTrigger:{trigger:"#gallery",start:"top top",end:()=>"+="+dist(),pin:true,scrub:1,invalidateOnRefresh:true}});
+  gsap.utils.toArray(".frame .media").forEach(m=>gsap.fromTo(m,{xPercent:-6},{xPercent:6,ease:"none",scrollTrigger:{trigger:m.closest(".frame"),containerAnimation:horiz,start:"left right",end:"right left",scrub:true}}));
+})();
 
-      <!-- ===================== UBICACIÓN / MAPA ANIMADO ===================== -->
-      <section class="section section--light" id="location">
-        <div class="container">
-          <p class="eyebrow reveal-up">Cómo llegar</p>
-          <h2 class="section-title reveal-up">Ubicación</h2>
-          <p class="reveal-up location__address">
-            Catedral Basílica de Nuestra Señora de la Luz<br />
-            Álvaro Obregón 112, Centro, 37000<br />
-            León de los Aldama, Gto. <span class="placeholder-note">(dirección temporal — reemplazar)</span>
-          </p>
-          <div class="map-reveal reveal-up" id="map-reveal">
-            <div class="map-reveal__pin">
-              <svg viewBox="0 0 24 32" class="icon-pin"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20c0-6.6-5.4-12-12-12zm0 16a4 4 0 110-8 4 4 0 010 8z" /></svg>
-            </div>
-            <iframe
-              class="map-reveal__frame"
-              title="Mapa de la ceremonia"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps?q=Catedral+Basílica+de+Nuestra+Señora+de+la+Luz,+León,+Guanajuato&output=embed"
-            ></iframe>
-          </div>
-        </div>
-      </section>
+/* Fireworks */
+const fw=document.getElementById("fireworks"),fx=fw.getContext("2d");let parts=[],fwOn=false,last=0;
+function sizeFw(){fw.width=fw.offsetWidth;fw.height=fw.offsetHeight;}
+ScrollTrigger.create({trigger:".finale",start:"top 60%",onEnter:()=>{fwOn=true;sizeFw();},onLeaveBack:()=>fwOn=false});
+addEventListener("resize",()=>{if(fwOn)sizeFw();});
+function burst(){const cx=Math.random()*fw.width,cy=Math.random()*fw.height*.6+fw.height*.1,hue=[45,42,35,50][Math.floor(Math.random()*4)];for(let i=0;i<60;i++){const a=Math.random()*7,sp=Math.random()*4+1;parts.push({x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,hue});}}
+(function loop(t){if(fwOn){if(t-last>900){burst();last=t;}fx.globalCompositeOperation="source-over";fx.fillStyle="rgba(5,5,15,.18)";fx.fillRect(0,0,fw.width,fw.height);fx.globalCompositeOperation="lighter";parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.03;p.life-=.012;if(p.life>0){fx.globalAlpha=p.life;fx.fillStyle=`hsl(${p.hue},80%,${60+p.life*20}%)`;fx.beginPath();fx.arc(p.x,p.y,2,0,7);fx.fill();}});parts=parts.filter(p=>p.life>0);}requestAnimationFrame(loop);})();
 
-      <!-- ===================== GALERÍA ===================== -->
-      <section class="section section--dark" id="gallery">
-        <div class="container">
-          <p class="eyebrow reveal-up">Momentos</p>
-          <h2 class="section-title reveal-up">Galería</h2>
-          <div class="gallery" id="gallery-grid">
-            <!-- Marcadores de imagen genéricos: sustituir por <img src="/assets/images/foto-N.jpg"> -->
-          </div>
-        </div>
-      </section>
-
-      <!-- ===================== MESA DE REGALOS ===================== -->
-      <section class="section section--light" id="gifts">
-        <div class="container container--narrow">
-          <p class="eyebrow reveal-up">Con cariño</p>
-          <h2 class="section-title reveal-up">Mesa de regalos</h2>
-          <p class="reveal-up">
-            Su presencia es nuestro mejor regalo. Si desean tener un detalle con
-            nosotros, dejamos algunas opciones.
-          </p>
-          <div class="gifts__grid reveal-up">
-            <a class="gift-card" href="#" data-store>
-              <span class="gift-card__name">[Tienda 1]</span>
-              <span class="gift-card__cta">Ir a tienda</span>
-            </a>
-            <a class="gift-card" href="#" data-store>
-              <span class="gift-card__name">[Tienda 2]</span>
-              <span class="gift-card__cta">Ir a tienda</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <footer class="footer">
-        <p>[Novia] &amp; [Novio] · 15 de marzo, 2027</p>
-      </footer>
-    </main>
-
-    <script type="module" src="/src/main.js"></script>
-  </body>
+addEventListener("load",()=>ScrollTrigger.refresh());
+</script>
+</body>
 </html>
