@@ -116,6 +116,47 @@
   .audio-btn .b1{height:8px}.audio-btn .b2{height:16px}.audio-btn .b3{height:11px}
   .audio-btn.paused .b1,.audio-btn.paused .b2,.audio-btn.paused .b3{height:4px}
 
+  /* Ubicación */
+  .loc-card{position:relative;width:min(860px,92vw);aspect-ratio:16/10;border-radius:6px;overflow:hidden;margin:1rem 0 2.4rem;
+    box-shadow:0 30px 80px rgba(0,0,0,.55);clip-path:inset(0 0 100% 0);border:1px solid rgba(233,196,106,.28)}
+  .loc-card iframe{position:absolute;inset:0;width:100%;height:100%;border:0;filter:grayscale(1) invert(.92) contrast(.9) hue-rotate(180deg)}
+  .radar{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;pointer-events:none;width:220px;height:220px}
+  .ring{position:absolute;left:50%;top:50%;width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:50%;
+    border:1px solid var(--gold);opacity:0;transform:scale(1)}
+  .pin{position:absolute;left:50%;top:50%;width:30px;margin:-46px 0 0 -15px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.6))}
+  .pin path{fill:var(--gold)}
+  .addr{font-family:var(--display);font-size:clamp(1rem,2.4vw,1.28rem);line-height:1.85;font-weight:300}
+  .addr .al{display:block;opacity:0}
+  .addr .prov{display:block;margin-top:.7rem;font-family:var(--body);font-size:.6rem;letter-spacing:.28em;
+    text-transform:uppercase;color:rgba(233,196,106,.75)}
+  .loc-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:2.2rem}
+  .pill{font-size:.66rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ivory);text-decoration:none;
+    border:1px solid rgba(233,196,106,.55);padding:.95rem 2rem;border-radius:40px;position:relative;overflow:hidden;transition:color .5s}
+  .pill span{position:relative;z-index:2}
+  .pill::before{content:"";position:absolute;inset:0;background:var(--gold);transform:translateY(101%);
+    transition:transform .5s cubic-bezier(.7,0,.2,1);z-index:1}
+  .pill:hover{color:var(--ink)} .pill:hover::before{transform:translateY(0)}
+
+  /* Vestimenta */
+  .code-word{font-family:var(--display);font-size:clamp(2.4rem,7vw,4.6rem);font-weight:300;letter-spacing:-.01em;margin:.2rem 0 .5rem}
+  .code-sub{max-width:40ch;margin:0 auto}
+  .stage{display:flex;align-items:flex-end;justify-content:center;gap:clamp(1rem,6vw,5rem);margin:3rem 0 1rem;width:100%}
+  .figure{width:clamp(108px,20vw,168px);height:auto;overflow:visible}
+  .figure *{fill-opacity:0;stroke:var(--gold);stroke-width:1;stroke-linejoin:round}
+  .wf-skin{fill:#E8C9A8}.wf-hair{fill:#241A1A}.wf-hair-w{fill:#2E1F1A}
+  .wf-tux{fill:#111124}.wf-shirt{fill:#F5F0E6}.wf-bow{fill:#0B0B22}.wf-lapel{fill:#1B1B33}
+  .wf-shoe{fill:#08080F}.wf-gown{fill:#14142E}.wf-belt{fill:var(--gold)}
+  .wf-shadow{fill:rgba(0,0,0,.45);stroke:none}
+  .swatches{display:flex;gap:1.1rem;flex-wrap:wrap;justify-content:center;margin-top:2.6rem}
+  .sw{display:flex;flex-direction:column;align-items:center;gap:.7rem;opacity:0}
+  .sw i{width:38px;height:38px;border-radius:50%;display:block;border:1px solid rgba(245,240,230,.25)}
+  .sw b{font-size:.55rem;letter-spacing:.24em;text-transform:uppercase;font-weight:400;color:rgba(245,240,230,.62)}
+  .avoid{margin-top:2.4rem;font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(245,240,230,.5)}
+  .avoid s{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(233,196,106,.5);padding-bottom:2px}
+  .badges{display:flex;gap:.9rem;flex-wrap:wrap;justify-content:center;margin-top:2rem}
+  .badge{font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(245,240,230,.7);
+    border:1px solid rgba(245,240,230,.18);border-radius:40px;padding:.7rem 1.4rem}
+
   .reveal{opacity:0}
 
   @media (max-width:640px){
@@ -124,9 +165,13 @@
     .line,.line-fill{left:11px}
     .dot{grid-column:1}
     .stop.left .card,.stop.right .card{grid-column:2;text-align:left;transform:translateX(30px)}
+    .loc-card{aspect-ratio:4/5}
+    .stage{gap:.5rem}
   }
   @media (prefers-reduced-motion:reduce){
-    .char{transform:none}.reveal,.hero-eyebrow,.hero-sub,.scroll-cue,.stop .card{opacity:1}
+    .char{transform:none}.reveal,.hero-eyebrow,.hero-sub,.scroll-cue,.stop .card,.sw{opacity:1}
+    .loc-card{clip-path:none}
+    .figure *{fill-opacity:1}
   }
 </style>
 </head>
@@ -207,6 +252,78 @@
     </div>
   </section>
 
+  <section id="ubicacion">
+    <div class="eyebrow reveal">Cómo llegar</div>
+    <h2 class="reveal">Ubicación</h2>
+    <div class="loc-card" id="locCard">
+      <iframe title="Mapa de la ceremonia" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=Catedral%20Bas%C3%ADlica%20de%20Nuestra%20Se%C3%B1ora%20de%20la%20Luz%2C%20Le%C3%B3n%2C%20Guanajuato&output=embed"></iframe>
+      <div class="radar" id="radar">
+        <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+        <svg class="pin" viewBox="0 0 24 32" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20c0-6.6-5.4-12-12-12zm0 16a4 4 0 110-8 4 4 0 010 8z"/></svg>
+      </div>
+    </div>
+    <p class="addr">
+      <span class="al">Catedral Basílica de Nuestra Señora de la Luz</span>
+      <span class="al">Álvaro Obregón 112, Centro, 37000</span>
+      <span class="al">León de los Aldama, Guanajuato</span>
+      <span class="prov">Dirección provisional — por confirmar</span>
+    </p>
+    <div class="loc-btns">
+      <a class="pill" target="_blank" rel="noopener"
+        href="https://www.google.com/maps/dir/?api=1&destination=Catedral%20Bas%C3%ADlica%20de%20Nuestra%20Se%C3%B1ora%20de%20la%20Luz%2C%20Le%C3%B3n%2C%20Guanajuato"><span>Google Maps</span></a>
+      <a class="pill" target="_blank" rel="noopener"
+        href="https://waze.com/ul?q=Catedral%20Bas%C3%ADlica%20de%20Nuestra%20Se%C3%B1ora%20de%20la%20Luz%2C%20Le%C3%B3n"><span>Waze</span></a>
+    </div>
+  </section>
+
+  <section id="vestimenta">
+    <div class="eyebrow reveal">Código de vestimenta</div>
+    <div class="code-word reveal">Etiqueta rigurosa</div>
+    <p class="code-sub reveal">Esmoquin para caballeros y vestido largo para damas. La noche lo merece.</p>
+
+    <div class="stage" id="stage">
+      <svg class="figure fig-man" viewBox="0 0 140 300" aria-hidden="true">
+        <ellipse class="wf-shadow" cx="70" cy="294" rx="46" ry="6"/>
+        <polygon class="wf-hair" points="59,10 81,10 78,4 62,4"/>
+        <polygon class="wf-skin" points="70,10 82,17 82,33 70,40 58,33 58,17"/>
+        <polygon class="wf-tux" points="46,42 94,42 88,90 92,120 48,120 52,90"/>
+        <polygon class="wf-shirt" points="63,42 77,42 75,74 65,74"/>
+        <polygon class="wf-lapel" points="62,42 70,66 55,49"/>
+        <polygon class="wf-lapel" points="78,42 70,66 85,49"/>
+        <polygon class="wf-bow" points="61,45 69,50 61,55"/>
+        <polygon class="wf-bow" points="79,45 71,50 79,55"/>
+        <polygon class="wf-bow" points="68,47 72,47 72,53 68,53"/>
+        <polygon class="wf-tux" points="50,120 68,120 66,270 46,270"/>
+        <polygon class="wf-tux" points="72,120 90,120 94,270 74,270"/>
+        <polygon class="wf-shoe" points="42,270 68,270 68,282 40,282"/>
+        <polygon class="wf-shoe" points="72,270 96,270 98,282 70,282"/>
+      </svg>
+
+      <svg class="figure fig-woman" viewBox="0 0 140 300" aria-hidden="true">
+        <ellipse class="wf-shadow" cx="70" cy="294" rx="46" ry="6"/>
+        <polygon class="wf-hair-w" points="54,14 86,14 90,50 84,54 70,42 56,54 50,50"/>
+        <polygon class="wf-skin" points="70,10 82,17 82,33 70,40 58,33 58,17"/>
+        <polygon class="wf-gown" points="52,42 88,42 80,88 100,150 128,282 12,282 40,150 60,88"/>
+        <polygon class="wf-belt" points="58,86 82,86 84,94 56,94"/>
+      </svg>
+    </div>
+
+    <div class="swatches" id="swatches">
+      <div class="sw"><i style="background:#0E0E1C"></i><b>Negro</b></div>
+      <div class="sw"><i style="background:#2B2B3D"></i><b>Oxford</b></div>
+      <div class="sw"><i style="background:#14142E"></i><b>Azul noche</b></div>
+      <div class="sw"><i style="background:#F5F0E6"></i><b>Marfil</b></div>
+      <div class="sw"><i style="background:#E9C46A"></i><b>Oro</b></div>
+    </div>
+
+    <p class="avoid reveal">Reservado para la novia: <s>blanco</s></p>
+    <div class="badges">
+      <span class="badge reveal">Se admiten niños</span>
+      <span class="badge reveal">Música clásica en vivo</span>
+    </div>
+  </section>
+
   <section class="gallery" id="gallery">
     <div class="track" id="track">
       <div class="intro">
@@ -214,9 +331,9 @@
         <h2 style="text-align:left;font-size:clamp(2rem,5vw,3.4rem)">Nuestra<br>historia</h2>
       </div>
       <div class="frame"><img class="media" src="assets/img/risa.jpg" alt="Risas"><div class="cap">Las risas que nos definen</div></div>
-      <div class="frame"><video class="media" src="assets/video/momento1.mp4" muted loop playsinline autoplay></video><div class="cap">Nuestra historia en movimiento</div></div>
+      <div class="frame"><video class="media" data-lazy src="assets/video/momento1.mp4" muted loop playsinline preload="none"></video><div class="cap">Nuestra historia en movimiento</div></div>
       <div class="frame"><img class="media" src="assets/img/baile.jpg" alt="Baile"><div class="cap">El primer baile</div></div>
-      <div class="frame"><video class="media" src="assets/video/momento2.mp4" muted loop playsinline autoplay></video><div class="cap">Y lo que viene</div></div>
+      <div class="frame"><video class="media" data-lazy src="assets/video/momento2.mp4" muted loop playsinline preload="none"></video><div class="cap">Y lo que viene</div></div>
     </div>
   </section>
 
@@ -241,6 +358,7 @@ const mix=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
 const rgb=a=>`rgb(${a[0]},${a[1]},${a[2]})`;
 const sky=document.querySelector(".sky"),glow=document.querySelector(".glow"),starsC=document.getElementById("stars");
 function paintSky(p){
+  window.__skyProgress=p;   // la música lee este mismo progreso (ver módulo Music)
   const seg=(skyStops.length-1)*p,i=Math.min(Math.floor(seg),skyStops.length-2),t=seg-i;
   sky.style.setProperty("--sky-top",rgb(mix(hx(skyStops[i].top),hx(skyStops[i+1].top),t)));
   sky.style.setProperty("--sky-bottom",rgb(mix(hx(skyStops[i].bot),hx(skyStops[i+1].bot),t)));
@@ -255,7 +373,12 @@ ScrollTrigger.create({trigger:"body",start:"top top",end:"bottom bottom",scrub:t
 const sc=starsC.getContext("2d");let stars=[];
 function sizeStars(){starsC.width=innerWidth;starsC.height=innerHeight;stars=Array.from({length:reduce?40:130},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.3+.2,tw:Math.random()*6.28}));}
 sizeStars();addEventListener("resize",sizeStars);
-(function d(){sc.clearRect(0,0,starsC.width,starsC.height);stars.forEach(s=>{s.tw+=.03;sc.globalAlpha=.5+Math.sin(s.tw)*.5;sc.fillStyle="#fff";sc.beginPath();sc.arc(s.x,s.y,s.r,0,7);sc.fill();});requestAnimationFrame(d);})();
+let starDirty=false;
+function drawStars(){
+  if(parseFloat(starsC.style.opacity||"0")<.01){if(starDirty){sc.clearRect(0,0,starsC.width,starsC.height);starDirty=false;}return;}
+  starDirty=true;sc.clearRect(0,0,starsC.width,starsC.height);
+  stars.forEach(s=>{s.tw+=.03;sc.globalAlpha=.5+Math.sin(s.tw)*.5;sc.fillStyle="#fff";sc.beginPath();sc.arc(s.x,s.y,s.r,0,7);sc.fill();});
+}
 
 /* Petals */
 const pc=document.getElementById("petals"),pctx=pc.getContext("2d");let petals=[],petalFade=1;
@@ -263,7 +386,12 @@ function sizeP(){pc.width=innerWidth;pc.height=innerHeight;}sizeP();addEventList
 function mk(){return{x:Math.random()*innerWidth,y:-20,s:Math.random()*7+5,vy:Math.random()*.8+.4,vx:Math.random()*.6-.3,rot:Math.random()*6,vr:Math.random()*.04-.02,c:["#F2D492","#E9C46A","#E8A87C","#F5F0E6"][Math.floor(Math.random()*4)],o:Math.random()*.5+.4};}
 if(!reduce)petals=Array.from({length:26},mk);
 ScrollTrigger.create({trigger:"body",start:"top top",end:"bottom bottom",scrub:true,onUpdate:s=>petalFade=Math.max(0,1-s.progress*1.6)});
-(function d(){pctx.clearRect(0,0,pc.width,pc.height);petals.forEach(p=>{p.y+=p.vy;p.x+=p.vx;p.rot+=p.vr;if(p.y>innerHeight+20)Object.assign(p,mk());pctx.save();pctx.translate(p.x,p.y);pctx.rotate(p.rot);pctx.globalAlpha=p.o*petalFade;pctx.fillStyle=p.c;pctx.beginPath();pctx.ellipse(0,0,p.s,p.s*.5,0,0,7);pctx.fill();pctx.restore();});requestAnimationFrame(d);})();
+let petalDirty=false;
+function drawPetals(){
+  if(petalFade<=.01||!petals.length){if(petalDirty){pctx.clearRect(0,0,pc.width,pc.height);petalDirty=false;}return;}
+  petalDirty=true;pctx.clearRect(0,0,pc.width,pc.height);
+  petals.forEach(p=>{p.y+=p.vy;p.x+=p.vx;p.rot+=p.vr;if(p.y>innerHeight+20)Object.assign(p,mk());pctx.save();pctx.translate(p.x,p.y);pctx.rotate(p.rot);pctx.globalAlpha=p.o*petalFade;pctx.fillStyle=p.c;pctx.beginPath();pctx.ellipse(0,0,p.s,p.s*.5,0,0,7);pctx.fill();pctx.restore();});
+}
 
 /* Countdown */
 const target=new Date("2027-03-15T17:00:00").getTime(),pad=n=>String(n).padStart(2,"0");
@@ -281,18 +409,96 @@ function playIntro(){
   gsap.fromTo(".hero-sub",{y:20},{opacity:1,y:0,duration:1,delay:1});
   gsap.to(".scroll-cue",{opacity:1,duration:1,delay:1.6});
 }
+/* ===================== Música =====================
+   Si existe assets/audio/musica.mp3 se reproduce ese archivo. Si no, la
+   pieza se sintetiza por código con Web Audio: un arpegio de piano con
+   reverb cuya armonía, registro, brillo y tempo viajan de la hora dorada
+   a la medianoche siguiendo el mismo progreso de scroll que el cielo.
+   Para usar tu propia canción basta con colocar el mp3 en esa ruta. */
+const Music=(()=>{
+  const el=document.getElementById("audio");
+  let ctx,master,timer,mode=null,on=false,prog=0,step=0,nextT=0;
+
+  // Progresiones (notas MIDI): cálida al atardecer → profunda a medianoche
+  const DAY  =[[60,64,67,71],[57,60,64,67],[53,57,60,64],[55,59,62,66]];
+  const NIGHT=[[57,60,64,71],[53,57,60,64],[50,53,57,60],[52,55,59,62]];
+  const ARP=[0,1,2,3,2,1,0,2];
+  const hz=n=>440*Math.pow(2,(n-69)/12);
+
+  // Reverb de sala: respuesta al impulso generada con ruido decreciente
+  function impulse(sec,decay){
+    const sr=ctx.sampleRate,len=Math.max(1,Math.floor(sr*sec)),b=ctx.createBuffer(2,len,sr);
+    for(let c=0;c<2;c++){const ch=b.getChannelData(c);
+      for(let i=0;i<len;i++)ch[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);}
+    return b;
+  }
+
+  // Una nota: triangular + armónico senoidal, ataque rápido y caída larga
+  function note(f,t,dur,vel){
+    const o=ctx.createOscillator(),o2=ctx.createOscillator(),
+          g=ctx.createGain(),hg=ctx.createGain(),lp=ctx.createBiquadFilter();
+    o.type="triangle";o.frequency.value=f;
+    o2.type="sine";o2.frequency.value=f*2.005;
+    hg.gain.value=.3;
+    lp.type="lowpass";lp.frequency.value=1500-prog*760;lp.Q.value=.7;
+    g.gain.setValueAtTime(.0001,t);
+    g.gain.linearRampToValueAtTime(vel,t+.014);
+    g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    o.connect(g);o2.connect(hg);hg.connect(g);g.connect(lp);lp.connect(master);
+    o.start(t);o2.start(t);o.stop(t+dur+.06);o2.stop(t+dur+.06);
+  }
+
+  // Planificador con anticipación: agenda las notas por venir
+  function tick(){
+    prog=window.__skyProgress||0;
+    const ahead=ctx.currentTime+.9;
+    while(nextT<ahead){
+      const set=prog<.5?DAY:NIGHT,ch=set[Math.floor(step/8)%set.length],i=step%8;
+      note(hz(ch[ARP[i]]+12),nextT,2.7,.15);
+      if(i===0)note(hz(ch[0]-12),nextT,4.4,.12);          // bajo en cada compás
+      if(i===4&&prog>.4)note(hz(ch[3]+24),nextT,3.4,.05); // brillo alto de noche
+      nextT+=.60+prog*.26;step++;                          // se remansa al oscurecer
+    }
+  }
+
+  function synth(){
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(!AC)return false;
+    ctx=new AC();
+    master=ctx.createGain();master.gain.value=.0001;
+    const verb=ctx.createConvolver();verb.buffer=impulse(3.2,2.4);
+    const wet=ctx.createGain();wet.gain.value=.38;
+    master.connect(ctx.destination);master.connect(verb);verb.connect(wet);wet.connect(ctx.destination);
+    nextT=ctx.currentTime+.15;tick();timer=setInterval(tick,200);
+    master.gain.setTargetAtTime(.2,ctx.currentTime,2.2);
+    mode="synth";on=true;return true;
+  }
+
+  return {
+    start(){return el.play().then(()=>{mode="file";on=true;return true;}).catch(()=>synth());},
+    toggle(){
+      if(mode==="file"){if(el.paused){el.play();on=true;}else{el.pause();on=false;}}
+      else if(mode==="synth"){
+        if(on){master.gain.setTargetAtTime(.0001,ctx.currentTime,.25);on=false;}
+        else{ctx.resume();master.gain.setTargetAtTime(.2,ctx.currentTime,.8);on=true;}
+      }
+      return on;
+    }
+  };
+})();
+
 document.getElementById("openBtn").addEventListener("click",()=>{
-  const a=document.getElementById("audio"),btn=document.getElementById("audioBtn");
-  a.play().then(()=>{btn.style.display="flex";btn.classList.remove("paused");}).catch(()=>{btn.style.display="flex";});
+  const btn=document.getElementById("audioBtn");
+  Music.start().then(ok=>{btn.style.display="flex";btn.classList.toggle("paused",!ok);})
+               .catch(()=>{btn.style.display="flex";});
   gsap.timeline().to("#preloader",{clipPath:"inset(0 0 100% 0)",duration:1.1,ease:"power4.inOut"})
     .set("#preloader",{display:"none"}).add(playIntro,"-=0.3");
 });
 gsap.set("#preloader",{clipPath:"inset(0 0 0% 0)"});
 
 /* Audio toggle */
-document.getElementById("audioBtn").addEventListener("click",()=>{
-  const a=document.getElementById("audio"),btn=document.getElementById("audioBtn");
-  if(a.paused){a.play();btn.classList.remove("paused");}else{a.pause();btn.classList.add("paused");}
+document.getElementById("audioBtn").addEventListener("click",e=>{
+  e.currentTarget.classList.toggle("paused",!Music.toggle());
 });
 
 /* Hero parallax + darken on scroll */
@@ -317,13 +523,103 @@ gsap.utils.toArray(".stop").forEach(st=>gsap.to(st.querySelector(".card"),{opaci
   gsap.utils.toArray(".frame .media").forEach(m=>gsap.fromTo(m,{xPercent:-6},{xPercent:6,ease:"none",scrollTrigger:{trigger:m.closest(".frame"),containerAnimation:horiz,start:"left right",end:"right left",scrub:true}}));
 })();
 
+/* Los videos de la galería solo se cargan y reproducen mientras están a la
+   vista: descargarlos todos de golpe satura el hilo principal y gasta datos
+   y batería en el móvil, que es donde se abren casi todas las invitaciones. */
+(function(){
+  const vids=document.querySelectorAll("video[data-lazy]");
+  if(!vids.length)return;
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    const v=e.target;
+    if(e.isIntersecting){if(v.preload==="none")v.preload="auto";v.play().catch(()=>{});}
+    else v.pause();
+  }),{rootMargin:"120px"});
+  vids.forEach(v=>io.observe(v));
+})();
+
+/* ===================== Ubicación =====================
+   La tarjeta se abre con un barrido, el pin cae con rebote y las ondas
+   de radar laten en bucle desde el punto exacto de la ceremonia. */
+(function(){
+  const card=document.getElementById("locCard");
+  if(!card)return;
+  const st={trigger:card,start:"top 78%",once:true};
+  const addrST={trigger:".addr",start:"top 88%"};
+
+  if(reduce){
+    gsap.set(".addr .al",{opacity:1});
+    gsap.set(".ring",{opacity:0});
+  }else{
+    gsap.to(card,{clipPath:"inset(0 0 0% 0)",duration:1.5,ease:"power4.inOut",scrollTrigger:st});
+    gsap.fromTo(".pin",{y:-170,opacity:0,scale:.4},
+      {y:0,opacity:1,scale:1,duration:1.3,ease:"bounce.out",delay:.75,scrollTrigger:st});
+    gsap.utils.toArray(".ring").forEach((r,i)=>
+      gsap.fromTo(r,{scale:.4,opacity:.8},
+        {scale:5.4,opacity:0,duration:3.4,ease:"sine.out",repeat:-1,delay:1.7+i*1.13,scrollTrigger:st}));
+    gsap.fromTo(".addr .al",{y:24},{opacity:1,y:0,duration:.9,stagger:.15,ease:"power3.out",scrollTrigger:addrST});
+  }
+  gsap.fromTo(".loc-btns .pill",{opacity:0,scale:.7},
+    {opacity:1,scale:1,duration:.8,stagger:.12,ease:"back.out(2)",
+     scrollTrigger:{trigger:".loc-btns",start:"top 92%"}});
+})();
+
+/* ===================== Vestimenta =====================
+   Cada prenda se dibuja trazo a trazo, después se rellena de color, y las
+   dos figuras quedan meciéndose despacio como si posaran. */
+(function(){
+  const stage=document.getElementById("stage");
+  if(!stage)return;
+  const man=stage.querySelector(".fig-man"),woman=stage.querySelector(".fig-woman");
+  const st={trigger:stage,start:"top 76%",once:true};
+
+  if(reduce){
+    gsap.set(".figure *",{fillOpacity:1});
+    gsap.set(".sw",{opacity:1});
+    return;
+  }
+
+  const sway=(t,dir,dur)=>gsap.to(t,{y:-7,rotate:1.4*dir,duration:dur,ease:"sine.inOut",yoyo:true,repeat:-1});
+  gsap.fromTo(man,{opacity:0,x:-70,rotate:-7},{opacity:1,x:0,rotate:0,duration:1.1,ease:"back.out(1.4)",
+    scrollTrigger:st,onComplete:()=>sway(man,1,2.7)});
+  gsap.fromTo(woman,{opacity:0,x:70,rotate:7},{opacity:1,x:0,rotate:0,duration:1.1,ease:"back.out(1.4)",
+    scrollTrigger:st,onComplete:()=>sway(woman,-1,3.1)});
+
+  stage.querySelectorAll(".figure *").forEach((el,i)=>{
+    let len=0;try{len=el.getTotalLength();}catch(e){}
+    if(len){
+      gsap.set(el,{strokeDasharray:len,strokeDashoffset:len});
+      gsap.to(el,{strokeDashoffset:0,duration:1.1,ease:"power2.out",delay:.3+i*.07,scrollTrigger:st});
+    }
+    gsap.to(el,{fillOpacity:1,duration:.7,delay:.95+i*.07,scrollTrigger:st});
+  });
+
+  gsap.fromTo(".sw",{opacity:0,y:26,scale:.6},
+    {opacity:1,y:0,scale:1,duration:.7,stagger:.09,ease:"back.out(2.2)",
+     scrollTrigger:{trigger:"#swatches",start:"top 90%"}});
+})();
+
 /* Fireworks */
 const fw=document.getElementById("fireworks"),fx=fw.getContext("2d");let parts=[],fwOn=false,last=0;
 function sizeFw(){fw.width=fw.offsetWidth;fw.height=fw.offsetHeight;}
 ScrollTrigger.create({trigger:".finale",start:"top 60%",onEnter:()=>{fwOn=true;sizeFw();},onLeaveBack:()=>fwOn=false});
 addEventListener("resize",()=>{if(fwOn)sizeFw();});
 function burst(){const cx=Math.random()*fw.width,cy=Math.random()*fw.height*.6+fw.height*.1,hue=[45,42,35,50][Math.floor(Math.random()*4)];for(let i=0;i<60;i++){const a=Math.random()*7,sp=Math.random()*4+1;parts.push({x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,hue});}}
-(function loop(t){if(fwOn){if(t-last>900){burst();last=t;}fx.globalCompositeOperation="source-over";fx.fillStyle="rgba(5,5,15,.18)";fx.fillRect(0,0,fw.width,fw.height);fx.globalCompositeOperation="lighter";parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.03;p.life-=.012;if(p.life>0){fx.globalAlpha=p.life;fx.fillStyle=`hsl(${p.hue},80%,${60+p.life*20}%)`;fx.beginPath();fx.arc(p.x,p.y,2,0,7);fx.fill();}});parts=parts.filter(p=>p.life>0);}requestAnimationFrame(loop);})();
+function drawFw(t){
+  if(!fwOn&&!parts.length)return;
+  if(fwOn&&t-last>900){burst();last=t;}
+  fx.globalCompositeOperation="source-over";fx.fillStyle="rgba(5,5,15,.18)";fx.fillRect(0,0,fw.width,fw.height);
+  fx.globalCompositeOperation="lighter";
+  parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.03;p.life-=.012;if(p.life>0){fx.globalAlpha=p.life;fx.fillStyle=`hsl(${p.hue},80%,${60+p.life*20}%)`;fx.beginPath();fx.arc(p.x,p.y,2,0,7);fx.fill();}});
+  parts=parts.filter(p=>p.life>0);
+}
+
+/* Un solo bucle de animación para los tres canvas: cada uno se salta su
+   dibujado cuando no está a la vista, y todo se detiene si la pestaña
+   pasa a segundo plano. */
+(function frame(t){
+  if(!document.hidden){drawStars();drawPetals();drawFw(t);}
+  requestAnimationFrame(frame);
+})(0);
 
 addEventListener("load",()=>ScrollTrigger.refresh());
 </script>
