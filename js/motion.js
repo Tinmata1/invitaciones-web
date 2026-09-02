@@ -192,52 +192,128 @@ export function playHeroIntro(reduce) {
 /* ------------------------------------------------------------------------- */
 /* 4 · Escena fija — sólo la historia la merece                              */
 /* ------------------------------------------------------------------------- */
+/* La historia no desfila de lado: se atraviesa. Los capítulos esperan al fondo
+   de la escena, el scroll los trae hasta el primer plano y siguen de largo por
+   encima del hombro del invitado. Dentro de cada marco, la imagen viaja a otra
+   velocidad que su plano: la deriva de siempre, ahora en profundidad.
+   Sólo se animan transform y opacity, y nunca hay más de dos planos a la vez
+   moviéndose de verdad. */
 function storyScene(reduce) {
   const story = qs("#historia");
   if (!story) return;
-  const track = qs(".story__track", story);
+  const intro   = qs(".story__intro", story);
+  const hint    = qs(".story__hint", story);
   const counter = qs("[data-story-index]", story);
-  const panels = qsa(".story__panel", story);
+  const panels  = qsa(".story__panel", story);
+  const ticks   = qsa(".story__tick", story);
+  if (!panels.length) return;
 
   // Sin movimiento, o en pantallas demasiado bajas para fijar cómodamente:
   // la historia se apila y se lee. No se pierde nada.
   const canPin = !reduce && window.innerHeight > 460;
-  if (!canPin) { story.classList.add("story--stacked"); return; }
+  if (!canPin) {
+    story.classList.add("story--stacked");
+    // Apilada no hay capítulo "activo": los videos vuelven a la regla común.
+    qsa("video[data-gated]", story).forEach((v) => v.removeAttribute("data-gated"));
+    return;
+  }
 
-  const distance = () => Math.max(0, track.scrollWidth - window.innerWidth + 40);
+  const FAR  = -1500;  // dónde espera un recuerdo antes de acercarse
+  const NEAR = 560;    // hasta dónde pasa de largo antes de desvanecerse
+  const LIFE = 2.2;    // lo que dura un capítulo, en unidades de la escena
+  const STEP = 1.75;   // cada cuánto entra el siguiente: se cruzan, no se pisan
+  const LEAD = 0.55;   // el título tiene tiempo de alejarse antes del primero
+  const FADE = 0.6;    // el cruce entre un recuerdo y el siguiente
+  const lastIndex = panels.length - 1;
+  // El último capítulo no pasa de largo: se posa y se queda. Así la escena no
+  // se suelta con la pantalla vacía, y la historia termina en el presente.
+  const units = LEAD + lastIndex * STEP + LIFE * 0.72;
 
-  const horiz = gsap.to(track, {
-    x: () => -distance(),
-    ease: "none",
+  /* --------- Qué capítulo se está mirando --------- */
+  let active = -1;
+  const setActive = (i) => {
+    if (i === active) return;
+    active = i;
+    if (counter) counter.textContent = String(i + 1).padStart(2, "0");
+    ticks.forEach((tick, k) => tick.classList.toggle("is-on", k <= i));
+    // Un solo video reproduciéndose: el del capítulo que se está mirando.
+    panels.forEach((panel, k) => {
+      const v = qs("video[data-gated]", panel);
+      if (!v) return;
+      if (k === i) {
+        if (!v.src && v.dataset.src) { v.src = v.dataset.src; v.preload = "auto"; v.load(); }
+        v.play().catch(() => {});
+      } else if (!v.paused) {
+        v.pause();
+      }
+    });
+  };
+
+  const tl = gsap.timeline({
+    defaults: { ease: "none" },
     scrollTrigger: {
       trigger: story,
       start: "top top",
-      end: () => "+=" + distance(),
+      end: () => "+=" + Math.round(window.innerHeight * 0.58 * units),
       pin: true,
-      scrub: 0.8,
-      invalidateOnRefresh: true,
+      scrub: 0.7,
       anticipatePin: 1,
+      invalidateOnRefresh: true,
       onUpdate: (self) => {
-        if (!counter || !panels.length) return;
-        const i = Math.min(panels.length, Math.max(1, Math.round(self.progress * panels.length + 0.2)));
-        const next = String(i).padStart(2, "0");
-        if (counter.textContent !== next) counter.textContent = next;
+        // El número cambia en mitad de la disolvencia, que es cuando el ojo
+        // deja de leer un capítulo y empieza a leer el siguiente.
+        const t = self.progress * units;
+        const i = Math.floor((t - LEAD - FADE / 2) / STEP);
+        setActive(Math.min(lastIndex, Math.max(0, i)));
       },
+      onLeaveBack: () => setActive(0),
     },
   });
 
-  // Segundo plano dentro de cada panel: la imagen se mueve menos que el marco
-  panels.forEach((panel) => {
-    const media = qs(".frame__media", panel);
-    if (!media) return;
-    gsap.fromTo(media,
-      { xPercent: -5 },
-      { xPercent: 5, ease: "none",
-        scrollTrigger: {
-          trigger: panel, containerAnimation: horiz,
-          start: "left right", end: "right left", scrub: true,
-        } });
+  // El título se aleja al fondo: el invitado entra dentro del recuerdo.
+  if (intro) tl.to(intro, { z: -700, opacity: 0, duration: LEAD + 0.35 }, 0);
+  if (hint)  tl.to(hint,  { opacity: 0, duration: 0.4 }, 0.9);
+
+  panels.forEach((panel, i) => {
+    const media   = qs(".frame__media", panel);
+    const caption = qs(".frame__caption", panel);
+    const side    = i % 2 ? 1 : -1;          // alternan de lado: nunca en fila
+    const at      = LEAD + i * STEP;
+    const last    = i === lastIndex;
+    const life    = last ? LIFE * 0.72 : LIFE;
+
+    // El plano entero, del fondo al primer plano. El último frena y se queda.
+    tl.fromTo(panel,
+      { z: FAR, xPercent: 30 * side, yPercent: 10, rotationY: -9 * side, rotationX: 4 },
+      last
+        ? { z: 40, xPercent: 0, yPercent: 0, rotationY: 0, rotationX: 0,
+            duration: life, ease: "power2.out" }
+        : { z: NEAR, xPercent: -18 * side, yPercent: -10, rotationY: 6 * side, rotationX: -2,
+            duration: life },
+      at)
+      // Aparece todavía lejos y se apaga al rebasar. La salida dura lo mismo
+      // que la entrada del siguiente y empieza a la vez: el relevo es una
+      // disolvencia limpia, nunca dos fotos superpuestas peleándose.
+      .fromTo(panel, { opacity: 0 }, { opacity: 1, duration: FADE }, at);
+    if (!last) tl.to(panel, { opacity: 0, duration: FADE }, at + STEP);
+
+    // Segundo plano: la imagen dentro del marco va a su propia velocidad.
+    if (media) {
+      tl.fromTo(media,
+        { scale: 1.2, yPercent: -3.5 },
+        { scale: 1.02, yPercent: 3.5, duration: life }, at);
+    }
+
+    // El pie entra cuando el recuerdo ya está cerca y se va antes de rebasar.
+    if (caption) {
+      tl.fromTo(caption,
+        { opacity: 0, yPercent: 22 },
+        { opacity: 1, yPercent: 0, duration: 0.5, ease: "power3.out" }, at + 0.5);
+      if (!last) tl.to(caption, { opacity: 0, duration: 0.35 }, at + STEP - 0.2);
+    }
   });
+
+  setActive(0);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -390,7 +466,9 @@ export function initLazyVideo() {
       const v = entry.target;
       if (entry.isIntersecting) {
         if (!v.src && v.dataset.src) { v.src = v.dataset.src; v.preload = "auto"; v.load(); }
-        v.play().catch(() => {});
+        // Los videos con puerta (los de la historia) los gobierna su escena:
+        // allí hay varios planos en pantalla a la vez y sólo se mira uno.
+        if (!v.hasAttribute("data-gated")) v.play().catch(() => {});
       } else if (!v.paused) {
         v.pause();
       }

@@ -194,7 +194,7 @@ módulos ES nativos. Cada push a `master` publica el repositorio tal cual
 | 1 | Hero | Video a sangre, nombres letra a letra, dos planos que se separan. |
 | 2 | La fecha | El 15 en enorme, cuenta atrás que rueda, y "agregar al calendario". |
 | 3 | Bendición | Solemne. Casi sin movimiento: es el contraste del hero. |
-| 4 | Nuestra historia | Escena fija con recorrido horizontal. |
+| 4 | Nuestra historia | Escena fija: los recuerdos llegan desde el fondo, pasan de largo y el último se queda. |
 | 5 | Ceremonia y recepción | Mapa con pin propio; la recepción dice que falta. |
 | 6 | Itinerario | Un hilo de luz que avanza con el lector y enciende cada hora. |
 | 7 | Vestimenta | Dos prendas dibujadas a trazo y la paleta como muestras de tela. |
@@ -217,13 +217,13 @@ Cinco familias, y ninguna se usa fuera de su sitio:
 1. **Tipografía enmascarada** — palabras que suben desde detrás de una máscara.
 2. **Máscara** — la fotografía se abre como un telón y la imagen se asienta.
 3. **Deriva** — dos planos a distinta velocidad. Nunca tres.
-4. **Escena fija** — sólo la historia la merece.
+4. **Escena fija** — sólo la historia la merece: la profundidad, no el desfile.
 5. **Ambiente** — cielo y partículas, siempre de fondo.
 
 ### `prefers-reduced-motion`
 
-Si el sistema lo pide: no hay escenas fijas, ni deriva, ni partículas, ni
-recorrido horizontal (la historia se apila y se lee), y **todo el contenido está
+Si el sistema lo pide: no hay escenas fijas, ni deriva, ni partículas, ni viaje
+en profundidad (la historia se apila y se lee), y **todo el contenido está
 visible desde el primer fotograma**. Verificado: cero elementos ocultos.
 
 ---
@@ -244,9 +244,17 @@ visible desde el primer fotograma**. Verificado: cero elementos ocultos.
 - Sin `filter: blur()` ni `mix-blend-mode` a pantalla completa: los dos cuestan
   un repintado carísimo en Safari móvil.
 
+- En la historia hay varios planos en pantalla a la vez, pero sólo se reproduce
+  el video del capítulo que se está mirando; los demás quedan en pausa.
+
 Medido en 390×844, densidad ×3 y **CPU frenada ×4** (un iPhone de gama media),
 recorriendo la página entera: mediana **12,1 ms** por fotograma, p95 **18,2 ms**,
 un único fotograma por encima de 50 ms.
+
+La historia, que es el acto más caro, se midió aparte en las mismas condiciones:
+mediana **18,2 ms**, p95 **30,3 ms**, ningún fotograma por encima de 50 ms. La
+versión anterior (el recorrido horizontal) daba p95 **36,4 ms** y tres fotogramas
+por encima de 50 ms en el mismo recorrido.
 
 ---
 

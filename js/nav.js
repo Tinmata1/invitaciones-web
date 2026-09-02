@@ -92,7 +92,10 @@ export function initNav(cfg) {
   function goTo(hash) {
     const target = document.getElementById(hash.replace("#", ""));
     if (!target) return;
-    const top = target.getBoundingClientRect().top + window.scrollY;
+    // Una sección fijada (la historia) miente sobre su posición mientras está
+    // pinchada: su sitio real es donde empieza su ScrollTrigger, no su rectángulo.
+    const pinned = window.ScrollTrigger?.getAll().find((t) => t.trigger === target && t.pin);
+    const top = pinned ? pinned.start : target.getBoundingClientRect().top + window.scrollY;
     window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
   }
 

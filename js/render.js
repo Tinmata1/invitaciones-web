@@ -165,20 +165,26 @@ export function renderStory(cfg) {
   const s = cfg.story;
   if (!s?.enabled || !s.chapters?.length) return null;
   const titleId = id("t");
+  const total = s.chapters.length;
 
+  // Cada capítulo es un plano suelto. En la escena viven todos a la vez, uno
+  // detrás de otro en profundidad, y el scroll los trae hacia el invitado.
   const panel = (c, i) => {
     const media = c.media.type === "video"
       ? el("video.frame__media", {
           "data-src": c.media.src, muted: true, loop: true, playsinline: true,
           "webkit-playsinline": "true", preload: "none", "data-lazy-video": "",
+          // Todos los planos están en pantalla a la vez: quien decide qué video
+          // se reproduce es la escena, no el observador de visibilidad.
+          "data-gated": "",
           "aria-label": c.media.alt || "", tabindex: "-1",
         })
       : el("img.frame__media", {
           src: c.media.src, alt: c.media.alt || "", loading: "lazy", decoding: "async",
         });
 
-    return el("div.story__panel",
-      el("figure.frame", { "data-reveal": "mask" },
+    return el("article.story__panel", { "data-panel": String(i), style: { "--i": String(i) } },
+      el("figure.frame",
         media,
         el("span.frame__veil", { "aria-hidden": "true" }),
         el("figcaption.frame__caption",
@@ -191,17 +197,21 @@ export function renderStory(cfg) {
   };
 
   return el("section#historia.story", { "aria-labelledby": titleId },
-    el("div.story__viewport",
-      el("div.story__track",
+    el("div.story__stage",
+      el("div.story__depth",
         el("div.story__intro",
-          el("p.eyebrow.eyebrow--start", s.eyebrow),
-          el("h2", { id: titleId }, lines(s.heading)),
+          el("p.eyebrow", { "data-reveal": "fade" }, s.eyebrow),
+          el("h2", { id: titleId, "data-reveal": "lines" }, lines(s.heading)),
         ),
         ...s.chapters.map(panel),
       ),
+      el("ol.story__rail", { "aria-hidden": "true" },
+        ...s.chapters.map((_, i) => el("li.story__tick", { "data-tick": String(i) })),
+      ),
+      el("p.story__counter", { "aria-hidden": "true" },
+        el("span", { "data-story-index": "" }, "01"), ` / ${String(total).padStart(2, "0")}`),
+      el("p.story__hint", { "aria-hidden": "true" }, el("i"), "Continúa"),
     ),
-    el("p.story__counter", { "aria-hidden": "true" }, el("span", { "data-story-index": "" }, "01"), ` / ${String(s.chapters.length).padStart(2, "0")}`),
-    el("p.story__hint", { "aria-hidden": "true" }, el("i"), "Continúa"),
   );
 }
 
