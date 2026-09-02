@@ -1,0 +1,87 @@
+/* ============================================================
+   TOKENS — el vocabulario visual de la invitación.
+   Todo lo demás se construye únicamente con estas variables.
+   ============================================================ */
+
+:root{
+  /* ---- Tinta: la noche ---- */
+  --ink-abyss:#04040C;
+  --ink:#0A0A1A;
+  --ink-raised:#12122A;
+
+  /* ---- Marfil: el papel ---- */
+  --ivory:#F4EFE4;
+  --ivory-80:rgba(244,239,228,.80);
+  --ivory-60:rgba(244,239,228,.60);
+  --ivory-40:rgba(244,239,228,.40);
+  --ivory-18:rgba(244,239,228,.18);
+  --ivory-10:rgba(244,239,228,.10);
+
+  /* ---- Oro: la luz ---- */
+  --gold:#E6C583;
+  --gold-soft:#F2DCAE;
+  --gold-deep:#B08D45;
+  --gold-60:rgba(230,197,131,.60);
+  --gold-35:rgba(230,197,131,.35);
+  --gold-18:rgba(230,197,131,.18);
+
+  /* ---- Atardecer: sólo para el cielo y los acentos cálidos ---- */
+  --ember:#E09A6C;
+  --plum:#6A4A6E;
+
+  /* ---- Tipografía ---- */
+  --font-display:"Fraunces",Georgia,"Times New Roman",serif;
+  --font-ui:"Jost",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+
+  /* Escala fluida 320px → 1440px. Un solo sistema para todo el sitio. */
+  --step--2:clamp(.60rem,.57rem + .14vw,.68rem);
+  --step--1:clamp(.70rem,.66rem + .19vw,.80rem);
+  --step-0 :clamp(.94rem,.90rem + .21vw,1.06rem);
+  --step-1 :clamp(1.12rem,1.04rem + .38vw,1.34rem);
+  --step-2 :clamp(1.34rem,1.20rem + .68vw,1.74rem);
+  --step-3 :clamp(1.62rem,1.36rem + 1.26vw,2.36rem);
+  --step-4 :clamp(1.94rem,1.50rem + 2.20vw,3.20rem);
+  --step-5 :clamp(2.34rem,1.58rem + 3.78vw,4.50rem);
+  --step-6 :clamp(2.80rem,1.48rem + 6.60vw,6.60rem);
+  --step-7 :clamp(3.40rem,1.00rem + 12.0vw,9.60rem);
+
+  /* Tracking editorial: las mayúsculas pequeñas siempre van abiertas */
+  --track-label:.34em;
+  --track-eyebrow:.42em;
+
+  /* ---- Ritmo vertical y horizontal ---- */
+  --space-1:.35rem;
+  --space-2:.7rem;
+  --space-3:1.1rem;
+  --space-4:1.7rem;
+  --space-5:2.6rem;
+  --space-6:clamp(3rem,6vw,4.6rem);
+  --space-7:clamp(4.4rem,9vw,7.5rem);
+  --space-8:clamp(6rem,14vw,12rem);
+
+  --gutter:clamp(1.35rem,6vw,4.5rem);
+  --measure:38ch;          /* longitud de línea cómoda para lectura */
+  --container:min(1180px,100% - var(--gutter) * 2);
+  --container-narrow:min(760px,100% - var(--gutter) * 2);
+
+  /* ---- Movimiento ---- */
+  --ease-out:cubic-bezier(.16,1,.3,1);          /* entradas: rápido y se posa */
+  --ease-inout:cubic-bezier(.76,0,.24,1);       /* transiciones de capítulo */
+  --ease-soft:cubic-bezier(.33,.1,.25,1);       /* microinteracciones */
+  --dur-micro:.42s;
+  --dur-reveal:1.05s;
+  --dur-scene:1.5s;
+
+  /* ---- Superficies ---- */
+  --radius:2px;            /* casi recto: el papel no tiene esquinas redondas */
+  --radius-pill:999px;
+  --hairline:1px;
+
+  --z-sky:0;
+  --z-ambient:2;
+  --z-grain:3;
+  --z-content:10;
+  --z-nav:60;
+  --z-overlay:90;
+  --z-curtain:100;
+}

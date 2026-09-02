@@ -1,0 +1,417 @@
+/* ============================================================
+   ACTOS — la puesta en escena de cada capítulo.
+   Regla de oro: una sola idea visual importante por escena.
+   ============================================================ */
+
+/* =========== ACTO 0 · EL SOBRE =========== */
+.curtain{
+  position:fixed;inset:0;z-index:var(--z-curtain);
+  display:grid;place-items:center;
+}
+.curtain__panel{
+  position:absolute;left:0;right:0;height:50.2%;
+  background:
+    radial-gradient(120% 90% at 50% 50%,rgba(60,44,82,.55),transparent 62%),
+    linear-gradient(180deg,#0B0918,#05050E);
+  will-change:transform;
+}
+.curtain__panel.is-top{top:0}
+.curtain__panel.is-bottom{bottom:0}
+.curtain__content{
+  position:relative;z-index:2;text-align:center;
+  padding:var(--gutter);
+  display:flex;flex-direction:column;align-items:center;
+}
+.curtain__eyebrow{margin-bottom:var(--space-4)}
+.monogram{width:clamp(112px,26vw,178px);height:auto;overflow:visible}
+.monogram path,.monogram line,.monogram circle{
+  fill:none;stroke:var(--gold);stroke-width:1.1;
+  stroke-linecap:round;stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+}
+.monogram .mono-amp{stroke:var(--gold-soft);stroke-width:1}
+.curtain__names{
+  font-family:var(--font-display);font-weight:300;
+  font-size:var(--step-4);line-height:1.1;margin-top:var(--space-4);
+}
+.curtain__date{
+  margin-top:var(--space-3);
+  font-size:var(--step--1);letter-spacing:.52em;text-transform:uppercase;
+  color:var(--gold);padding-left:.52em;
+}
+.curtain__line{width:0;height:1px;background:var(--gold);margin:var(--space-5) auto var(--space-5)}
+.curtain__hint{margin-top:var(--space-4);font-size:var(--step--2);letter-spacing:.3em;text-transform:uppercase;color:var(--ivory-40)}
+
+/* =========== ACTO 1 · HERO =========== */
+.hero{
+  position:relative;min-height:100svh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:var(--space-8) var(--gutter);
+  overflow:hidden;text-align:center;
+}
+.hero__media{position:absolute;inset:0;z-index:-2;overflow:hidden}
+.hero__media video,.hero__media img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transform:scale(1.08);
+}
+.hero__veil{
+  position:absolute;inset:0;z-index:-1;
+  background:
+    linear-gradient(180deg,rgba(6,6,18,.58) 0%,rgba(6,6,18,.14) 34%,rgba(6,6,18,.30) 62%,rgba(6,6,18,.86) 100%),
+    radial-gradient(120% 80% at 50% 45%,transparent 40%,rgba(6,6,18,.45) 100%);
+}
+.hero__names{
+  font-family:var(--font-display);font-weight:300;
+  font-size:var(--step-7);line-height:.92;letter-spacing:-.02em;
+  text-shadow:0 6px 60px rgba(0,0,0,.45);
+}
+.hero__line{display:block;overflow:hidden;padding-block:.06em}
+.hero__char{display:inline-block;will-change:transform}
+.hero__amp{font-size:.62em;display:inline-block}
+.hero__credits{
+  margin-top:var(--space-5);
+  display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap;justify-content:center;
+  font-size:var(--step--1);letter-spacing:var(--track-label);text-transform:uppercase;
+  color:var(--ivory-80);
+}
+.hero__credits i{display:block;width:34px;height:1px;background:var(--gold-60);font-style:normal}
+@media (max-width:560px){
+  .hero__credits{flex-direction:column;gap:var(--space-2)}
+  .hero__credits i{width:52px}
+}
+.hero__sub{margin-top:var(--space-4);max-width:34ch;margin-inline:auto;color:var(--ivory-80)}
+.scroll-cue{
+  position:absolute;left:50%;bottom:calc(var(--space-4) + env(safe-area-inset-bottom,0px));
+  transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.85rem;
+  font-size:var(--step--2);letter-spacing:.34em;text-transform:uppercase;color:var(--ivory-60);
+}
+.scroll-cue__track{position:relative;width:1px;height:46px;background:var(--ivory-18);overflow:hidden}
+.scroll-cue__track::after{
+  content:"";position:absolute;top:0;left:0;width:100%;height:44%;
+  background:linear-gradient(var(--gold),transparent);
+  animation:cue 2.2s cubic-bezier(.6,0,.35,1) infinite;
+}
+@keyframes cue{0%{transform:translateY(-110%)}70%,100%{transform:translateY(240%)}}
+@media (prefers-reduced-motion:reduce){.scroll-cue__track::after{animation:none;height:100%;opacity:.5}}
+
+/* =========== ACTO 2 · LA FECHA =========== */
+.date-act{text-align:center}
+.date-mark{
+  position:relative;display:inline-grid;
+  grid-template-columns:auto auto;align-items:center;
+  column-gap:clamp(.8rem,3vw,2rem);
+  margin-block:var(--space-4) var(--space-6);
+}
+.date-mark__day{
+  font-family:var(--font-display);font-weight:300;
+  font-size:var(--step-7);line-height:.8;letter-spacing:-.04em;
+  color:var(--ivory);
+}
+.date-mark__stack{text-align:left;display:flex;flex-direction:column;gap:.55rem}
+.date-mark__month{
+  font-family:var(--font-display);font-style:italic;font-weight:300;
+  font-size:var(--step-3);line-height:1;color:var(--gold-soft);
+}
+.date-mark__year{
+  font-size:var(--step--1);letter-spacing:.4em;text-transform:uppercase;color:var(--ivory-60);
+}
+.date-mark__weekday{
+  font-size:var(--step--1);letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ivory-60);
+}
+
+.countdown{
+  display:flex;justify-content:center;align-items:stretch;flex-wrap:nowrap;
+  gap:0;margin-inline:auto;width:min(620px,100%);
+}
+.cd-unit{
+  flex:1 1 0;min-width:0;
+  display:flex;flex-direction:column;align-items:center;gap:.7rem;
+  padding-inline:clamp(.2rem,2vw,1rem);
+  position:relative;
+}
+.cd-unit + .cd-unit::before{
+  content:"";position:absolute;left:0;top:12%;bottom:22%;width:1px;background:var(--ivory-10);
+}
+.cd-value{
+  font-family:var(--font-display);font-weight:300;
+  font-size:var(--step-5);line-height:1;color:var(--gold-soft);
+  font-variant-numeric:tabular-nums lining-nums;
+  height:1em;overflow:hidden;position:relative;
+}
+.cd-value__roll{display:block;will-change:transform}
+.cd-label{font-size:var(--step--2);letter-spacing:.26em;text-transform:uppercase;color:var(--ivory-40)}
+
+.date-warning{
+  margin:var(--space-5) auto 0;max-width:52ch;
+  padding:var(--space-3) var(--space-4);
+  border:1px dashed var(--gold-35);border-radius:var(--radius);
+  font-size:var(--step--1);color:var(--gold);text-align:left;line-height:1.6;
+}
+
+/* =========== ACTO 3 · BENDICIÓN =========== */
+.blessing{text-align:center}
+.blessing__verse{
+  font-family:var(--font-display);font-weight:300;font-style:italic;
+  font-size:var(--step-3);line-height:1.5;color:var(--ivory-80);
+  max-width:26ch;margin:var(--space-2) auto var(--space-7);
+}
+.parents{
+  display:grid;gap:var(--space-7) var(--space-6);
+  grid-template-columns:1fr;justify-items:center;
+}
+@media (min-width:760px){.parents{grid-template-columns:1fr 1px 1fr;align-items:center}}
+.parents__divider{display:none;width:1px;height:70%;background:var(--ivory-10);justify-self:center}
+@media (min-width:760px){.parents__divider{display:block}}
+.parents__role{
+  font-size:var(--step--2);letter-spacing:var(--track-label);text-transform:uppercase;
+  color:var(--gold);margin-bottom:var(--space-3);
+}
+.parents__name{
+  font-family:var(--font-display);font-weight:300;font-size:var(--step-2);
+  line-height:1.9;color:var(--ivory);
+}
+
+/* =========== ACTO 4 · NUESTRA HISTORIA =========== */
+.story{padding:0;overflow:hidden;position:relative}
+.story__viewport{height:100svh;display:flex;align-items:center;overflow:hidden}
+.story__track{display:flex;align-items:center;gap:clamp(1.1rem,3.5vw,3rem);padding-inline:var(--gutter);height:100%}
+.story__intro{
+  flex:0 0 auto;width:min(74vw,420px);text-align:left;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.story__intro h2{font-size:var(--step-4)}
+.story__panel{
+  flex:0 0 auto;
+  width:min(76vw,440px);
+  height:min(70svh,620px);
+}
+.story__panel .frame{width:100%;height:100%}
+.story__counter{
+  position:absolute;left:var(--gutter);bottom:calc(var(--space-4) + env(safe-area-inset-bottom,0px));
+  z-index:5;font-size:var(--step--2);letter-spacing:.3em;color:var(--ivory-40);
+  font-variant-numeric:tabular-nums;
+}
+.story__hint{
+  position:absolute;left:var(--gutter);bottom:calc(var(--space-4) + 1.9rem + env(safe-area-inset-bottom,0px));
+  z-index:5;font-size:var(--step--2);letter-spacing:.3em;text-transform:uppercase;color:var(--ivory-40);
+  display:flex;align-items:center;gap:.6rem;
+}
+.story__hint i{display:block;width:26px;height:1px;background:var(--gold-60)}
+/* Sin movimiento o en pantallas muy bajas: la historia se apila y se lee */
+.story--stacked .story__viewport{height:auto;display:block}
+.story--stacked .story__track{display:grid;grid-template-columns:1fr;gap:var(--space-5);padding-block:var(--space-6)}
+.story--stacked .story__panel{width:100%;height:min(72svh,560px)}
+.story--stacked .story__intro{width:100%}
+.story--stacked .story__counter,.story--stacked .story__hint{display:none}
+
+/* =========== ACTO 5 · CEREMONIA Y RECEPCIÓN =========== */
+.venue{display:grid;gap:var(--space-6);align-items:center}
+@media (min-width:900px){
+  .venue{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:var(--space-7)}
+  .venue__text{text-align:left}
+  .venue__text .eyebrow::before{display:none}
+}
+.venue__name{font-family:var(--font-display);font-size:var(--step-3);font-weight:300;line-height:1.25;margin-bottom:var(--space-3)}
+.venue__addr{color:var(--ivory-80);line-height:1.9;font-size:var(--step-0)}
+.venue__addr span{display:block}
+.venue__map{
+  position:relative;width:100%;aspect-ratio:4/5;
+  border:1px solid var(--gold-18);border-radius:var(--radius);overflow:hidden;
+  background:var(--ink-raised);
+}
+@media (min-width:900px){.venue__map{aspect-ratio:16/11}}
+.venue__map iframe{
+  position:absolute;inset:0;width:100%;height:100%;border:0;
+  filter:grayscale(1) invert(.92) contrast(.86) hue-rotate(185deg) brightness(.95);
+}
+.venue__pin{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;pointer-events:none;width:200px;height:200px}
+.venue__ring{
+  position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;
+  border-radius:50%;border:1px solid var(--gold);opacity:0;
+}
+.venue__needle{position:absolute;left:50%;top:50%;width:1px;height:34px;margin:-34px 0 0 0;background:linear-gradient(180deg,transparent,var(--gold))}
+.venue__dot{position:absolute;left:50%;top:50%;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px var(--gold)}
+.venue--pending .venue__panel{
+  border:1px dashed var(--ivory-18);border-radius:var(--radius);
+  padding:var(--space-6) var(--space-4);text-align:center;
+}
+.venue--pending .venue__panel p{margin-inline:auto}
+
+/* =========== ACTO 6 · ITINERARIO =========== */
+.timeline{position:relative;width:min(820px,100%);margin-inline:auto;padding-block:var(--space-4)}
+.timeline__spine,.timeline__fill{position:absolute;top:0;bottom:0;width:1px}
+.timeline__spine{background:var(--ivory-10)}
+.timeline__fill{background:linear-gradient(180deg,var(--ember),var(--gold));transform:scaleY(0);transform-origin:top center}
+.timeline__stop{position:relative;display:grid;align-items:center;margin-block:var(--space-6)}
+.timeline__node{
+  width:9px;height:9px;border-radius:50%;
+  background:var(--ink);border:1px solid var(--gold-60);
+  justify-self:center;position:relative;z-index:2;
+  transition:background-color .45s var(--ease-soft),box-shadow .45s var(--ease-soft);
+}
+.timeline__stop.is-on .timeline__node{background:var(--gold);box-shadow:0 0 0 4px rgba(230,197,131,.14),0 0 18px var(--gold)}
+.timeline__card{max-width:32ch}
+.timeline__time{font-family:var(--font-display);font-style:italic;font-weight:300;font-size:var(--step-2);color:var(--gold-soft);line-height:1}
+.timeline__title{font-family:var(--font-display);font-size:var(--step-1);font-weight:300;margin-top:.35rem}
+.timeline__note{font-size:var(--step--1);color:var(--ivory-60);margin-top:.3rem;line-height:1.6}
+
+/* Móvil: la espina va a la izquierda y el nodo cuelga de ella.
+   El nodo se posiciona en absoluto para que su centro caiga exactamente
+   sobre el hilo, sin depender del ancho de la columna. */
+.timeline{padding-left:34px}
+.timeline__spine,.timeline__fill{left:4px}
+.timeline__stop{display:block}
+.timeline__stop .timeline__node{position:absolute;left:-34px;top:.5em}
+.timeline__card{text-align:left;max-width:36ch}
+
+@media (min-width:820px){
+  .timeline{padding-left:0}
+  .timeline__spine,.timeline__fill{left:50%;transform-origin:top center}
+  .timeline__spine{transform:translateX(-50%)}
+  .timeline__fill{transform:translateX(-50%) scaleY(0)}
+  .timeline__stop{display:grid;grid-template-columns:1fr 44px 1fr;column-gap:0}
+  .timeline__stop .timeline__node{position:static;grid-column:2;grid-row:1;justify-self:center}
+  .timeline__stop:nth-child(odd) .timeline__card{grid-column:1;grid-row:1;text-align:right;justify-self:end}
+  .timeline__stop:nth-child(even) .timeline__card{grid-column:3;grid-row:1;text-align:left;justify-self:start}
+}
+
+/* =========== ACTO 7 · VESTIMENTA =========== */
+.dress__code{
+  font-family:var(--font-display);font-weight:300;font-size:var(--step-5);
+  line-height:1.05;margin-block:var(--space-2) var(--space-4);
+}
+.silhouettes{
+  display:flex;align-items:flex-end;justify-content:center;
+  gap:clamp(2rem,10vw,7rem);
+  margin-block:var(--space-6) var(--space-6);
+}
+.silhouette{width:clamp(84px,17vw,132px);height:auto;overflow:visible}
+.silhouette path,.silhouette line,.silhouette circle{
+  fill:none;stroke:var(--gold);stroke-width:1;
+  stroke-linecap:round;stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
+}
+.silhouette .sil-soft{stroke:var(--gold-60)}
+.silhouette__label{
+  display:block;margin-top:var(--space-3);text-align:center;
+  font-size:var(--step--2);letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ivory-40);
+}
+.silhouette-wrap{display:flex;flex-direction:column;align-items:center}
+
+/* Rejilla, no flex: con flex-wrap la última muestra se iba sola a una fila
+   entera en móvil. En rejilla las cinco caben siempre y comparten altura. */
+.palette{
+  display:grid;grid-auto-flow:column;grid-auto-columns:1fr;
+  width:min(560px,100%);margin-inline:auto;
+  border:1px solid var(--ivory-10);
+}
+.palette__chip{min-width:0;display:flex;flex-direction:column}
+.palette__chip i{display:block;height:clamp(56px,13vw,84px)}
+.palette__chip b{
+  font-weight:400;font-size:var(--step--2);letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ivory-60);padding:.75rem .3rem;text-align:center;border-top:1px solid var(--ivory-10);
+}
+.dress__reserved{
+  margin-top:var(--space-5);font-size:var(--step-0);color:var(--ivory-80);
+}
+.dress__reserved em{font-family:var(--font-display);font-style:italic;color:var(--gold-soft)}
+.policy-row{
+  display:flex;flex-wrap:wrap;gap:var(--space-3);justify-content:center;margin-top:var(--space-5);
+}
+.policy{
+  font-size:var(--step--2);letter-spacing:.22em;text-transform:uppercase;color:var(--ivory-60);
+  border:1px solid var(--ivory-18);border-radius:var(--radius-pill);padding:.68rem 1.4rem;
+}
+
+/* =========== ACTO 8 · ANTES DE CELEBRAR =========== */
+.details__grid{margin-top:var(--space-6)}
+.detail__value{font-family:var(--font-display);font-size:var(--step-1);font-weight:300;line-height:1.35;color:var(--ivory)}
+.detail__note{margin-top:var(--space-2);font-size:var(--step--1);color:var(--ivory-60);line-height:1.7}
+
+/* =========== ACTO 9 · RSVP =========== */
+.rsvp__form{width:min(560px,100%);margin-inline:auto;margin-top:var(--space-6);text-align:left}
+.rsvp__deadline{
+  font-size:var(--step--1);letter-spacing:var(--track-label);text-transform:uppercase;
+  color:var(--gold);margin-top:var(--space-3);
+}
+.rsvp__conditional{overflow:hidden}
+.rsvp__actions{display:flex;justify-content:center;margin-top:var(--space-5)}
+
+/* =========== ACTO 10 · CANCIÓN =========== */
+.song{text-align:center}
+.song__form{display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:flex-end;justify-content:center;width:min(560px,100%);margin:var(--space-5) auto 0}
+.song__form .field{flex:1 1 260px;margin-bottom:0}
+
+/* =========== ACTO 11 · REGALOS =========== */
+.registry__lead{
+  font-family:var(--font-display);font-weight:300;font-size:var(--step-3);
+  line-height:1.4;max-width:20ch;margin:var(--space-4) auto var(--space-6);
+}
+.registry__options{width:min(680px,100%);margin:var(--space-6) auto 0;border-top:1px solid var(--ivory-10)}
+.registry__option{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);
+  padding:var(--space-4) 0;border-bottom:1px solid var(--ivory-10);
+  text-align:left;
+  transition:padding-inline var(--dur-micro) var(--ease-soft);
+}
+a.registry__option:hover,a.registry__option:focus-visible{padding-inline:.7rem}
+.registry__name{font-family:var(--font-display);font-size:var(--step-2);font-weight:300;line-height:1.25}
+.registry__meta{display:block;font-family:var(--font-ui);font-size:var(--step--1);color:var(--ivory-40);margin-top:.35rem;letter-spacing:.06em}
+.registry__go{
+  flex:0 0 auto;font-size:var(--step--2);letter-spacing:var(--track-label);text-transform:uppercase;
+  color:var(--gold);display:flex;align-items:center;gap:.6rem;
+}
+.registry__go i{display:block;width:22px;height:1px;background:var(--gold);transition:width var(--dur-micro) var(--ease-soft)}
+a.registry__option:hover .registry__go i{width:34px}
+
+/* =========== ACTO 12 · FAQ =========== */
+.faq__list{width:min(760px,100%);margin:var(--space-6) auto 0}
+
+/* =========== ACTO 13 · MEDIANOCHE =========== */
+.finale{
+  position:relative;min-height:100svh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:var(--space-8) var(--gutter);
+}
+.finale__monogram{width:clamp(120px,30vw,210px);margin-bottom:var(--space-5)}
+.finale__names{
+  font-family:var(--font-display);font-weight:300;
+  font-size:var(--step-6);line-height:1;
+}
+.finale__await{
+  margin-top:var(--space-5);font-size:var(--step--1);letter-spacing:.44em;text-transform:uppercase;
+  color:var(--gold);padding-left:.44em;
+}
+.finale__place{margin-top:var(--space-3);font-size:var(--step--1);letter-spacing:.24em;text-transform:uppercase;color:var(--ivory-40)}
+.colophon{
+  margin-top:var(--space-8);font-size:var(--step--2);letter-spacing:.24em;text-transform:uppercase;
+  color:var(--ivory-40);
+}
+
+/* =========== Ajustes por tamaño =========== */
+@media (max-width:400px){
+  .cd-value{font-size:var(--step-4)}
+  .cd-label{letter-spacing:.16em;font-size:.58rem}
+  .hero__credits{gap:var(--space-2)}
+  .hero__credits i{width:22px}
+}
+@media (min-width:1440px){
+  .act{padding-block:calc(var(--space-8) * 1.15)}
+}
+
+/* Pase personalizado (?invitado=…). Comodidad, no control de acceso. */
+.rsvp__pass{
+  width:min(560px,100%);margin:var(--space-5) auto 0;
+  padding:var(--space-4);text-align:left;
+  border:1px solid var(--gold-18);border-radius:var(--radius);
+}
+.rsvp__pass-name{
+  font-family:var(--font-display);font-weight:300;font-size:var(--step-2);
+  line-height:1.2;margin-top:var(--space-1);
+}
+.rsvp__pass-seats{
+  margin-top:var(--space-2);
+  font-size:var(--step--2);letter-spacing:var(--track-label);
+  text-transform:uppercase;color:var(--gold);
+}
