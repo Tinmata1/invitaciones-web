@@ -157,6 +157,26 @@
   .badge{font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(245,240,230,.7);
     border:1px solid rgba(245,240,230,.18);border-radius:40px;padding:.7rem 1.4rem}
 
+  /* Mesa de regalos */
+  .gift-stage{width:min(260px,52vw);height:auto;overflow:visible;margin:1.4rem 0 .6rem}
+  .gift-stage *{fill-opacity:0;stroke:var(--gold);stroke-width:1.2;stroke-linejoin:round}
+  .gift-box{fill:#14142E}.gift-lid{fill:#1B1B33}.gift-ribbon{fill:rgba(233,196,106,.9)}
+  .gifts-intro{max-width:44ch;margin:0 auto}
+  .gifts{display:flex;gap:1.6rem;flex-wrap:wrap;justify-content:center;margin-top:2.8rem;perspective:900px}
+  .store{position:relative;width:min(290px,86vw);padding:2.3rem 1.8rem;border-radius:6px;opacity:0;
+    border:1px solid rgba(233,196,106,.3);background:rgba(11,11,34,.35);backdrop-filter:blur(4px);
+    text-decoration:none;color:var(--ivory);overflow:hidden;transition:border-color .5s}
+  /* El realce al pasar el cursor lo hace GSAP, no una transición CSS: animar
+     transform desde los dos lados a la vez hace que peleen fotograma a
+     fotograma y la tarjeta se quede a medio girar al entrar. */
+  .store:hover{border-color:rgba(233,196,106,.85)}
+  .store__name{display:block;font-family:var(--display);font-size:1.45rem;font-weight:300;line-height:1.3}
+  .store__cta{display:block;margin-top:1.1rem;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+  .store::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;pointer-events:none;
+    background:linear-gradient(100deg,transparent,rgba(233,196,106,.18),transparent);transform:skewX(-18deg)}
+  .store:hover::after{left:125%;transition:left .9s ease}
+  .gifts-note{margin-top:2.4rem;font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(233,196,106,.75)}
+
   .reveal{opacity:0}
 
   @media (max-width:640px){
@@ -169,9 +189,9 @@
     .stage{gap:.5rem}
   }
   @media (prefers-reduced-motion:reduce){
-    .char{transform:none}.reveal,.hero-eyebrow,.hero-sub,.scroll-cue,.stop .card,.sw{opacity:1}
+    .char{transform:none}.reveal,.hero-eyebrow,.hero-sub,.scroll-cue,.stop .card,.sw,.store{opacity:1}
     .loc-card{clip-path:none}
-    .figure *{fill-opacity:1}
+    .figure *,.gift-stage *{fill-opacity:1}
   }
 </style>
 </head>
@@ -256,8 +276,12 @@
     <div class="eyebrow reveal">Cómo llegar</div>
     <h2 class="reveal">Ubicación</h2>
     <div class="loc-card" id="locCard">
-      <iframe title="Mapa de la ceremonia" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-        src="https://www.google.com/maps?q=Catedral%20Bas%C3%ADlica%20de%20Nuestra%20Se%C3%B1ora%20de%20la%20Luz%2C%20Le%C3%B3n%2C%20Guanajuato&output=embed"></iframe>
+      <!-- Mapa de OpenStreetMap: a diferencia del embed de Google, no planta un
+           marcador propio, así el único pin es el dorado de abajo. El recuadro
+           encuadra la catedral (21.12400, -101.68201). Para mover el mapa basta
+           con cambiar el bbox: minLon,minLat,maxLon,maxLat -->
+      <iframe title="Mapa de la ceremonia" loading="lazy"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=-101.68621%2C21.12080%2C-101.67781%2C21.12720&layer=mapnik"></iframe>
       <div class="radar" id="radar">
         <div class="ring"></div><div class="ring"></div><div class="ring"></div>
         <svg class="pin" viewBox="0 0 24 32" aria-hidden="true"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20c0-6.6-5.4-12-12-12zm0 16a4 4 0 110-8 4 4 0 010 8z"/></svg>
@@ -335,6 +359,40 @@
       <div class="frame"><img class="media" src="assets/img/baile.jpg" alt="Baile"><div class="cap">El primer baile</div></div>
       <div class="frame"><video class="media" data-lazy src="assets/video/momento2.mp4" muted loop playsinline preload="none"></video><div class="cap">Y lo que viene</div></div>
     </div>
+  </section>
+
+  <section id="regalos">
+    <div class="eyebrow reveal">Con cariño</div>
+    <h2 class="reveal">Mesa de regalos</h2>
+
+    <svg class="gift-stage" id="giftStage" viewBox="0 0 200 165" aria-hidden="true">
+      <polygon class="gift-box" points="40,72 160,72 160,142 40,142"/>
+      <polygon class="gift-lid" points="32,52 168,52 168,72 32,72"/>
+      <polygon class="gift-ribbon" points="93,52 107,52 107,142 93,142"/>
+      <path class="gift-ribbon" d="M100 51 C 72 53, 56 34, 70 23 C 84 13, 97 36, 100 51 Z"/>
+      <path class="gift-ribbon" d="M100 51 C 128 53, 144 34, 130 23 C 116 13, 103 36, 100 51 Z"/>
+    </svg>
+
+    <p class="gifts-intro reveal">
+      Su presencia es nuestro mejor regalo. Si desean tener un detalle con
+      nosotros, dejamos algunas opciones.
+    </p>
+
+    <!-- Enlaces provisionales a la portada de mesas de regalo de cada tienda.
+         Cuando abran la suya, sustituyan el href por el enlace directo (el que
+         incluye el número o código de la mesa) y listo. -->
+    <div class="gifts">
+      <a class="store" href="https://www.amazon.com.mx/wedding/home" target="_blank" rel="noopener">
+        <span class="store__name">Amazon</span>
+        <span class="store__cta">Ir a la tienda</span>
+      </a>
+      <a class="store" href="https://www.elpalaciodehierro.com/mesa-de-regalos" target="_blank" rel="noopener">
+        <span class="store__name">El Palacio<br>de Hierro</span>
+        <span class="store__cta">Ir a la tienda</span>
+      </a>
+    </div>
+
+    <p class="gifts-note reveal">Mesas por abrir — enlaces provisionales</p>
   </section>
 
   <section class="finale">
@@ -598,9 +656,48 @@ gsap.utils.toArray(".stop").forEach(st=>gsap.to(st.querySelector(".card"),{opaci
      scrollTrigger:{trigger:"#swatches",start:"top 90%"}});
 })();
 
+/* ===================== Mesa de regalos =====================
+   La caja se dibuja trazo a trazo empezando por el lazo, se rellena, y la
+   tapa queda respirando. Las tarjetas de tienda entran girando en 3D. */
+(function(){
+  const g=document.getElementById("giftStage");
+  if(!g)return;
+  const st={trigger:"#regalos",start:"top 72%",once:true};
+  const cards={trigger:".gifts",start:"top 88%",once:true};
+
+  if(reduce){
+    gsap.set(".gift-stage *",{fillOpacity:1});
+    gsap.set(".store",{opacity:1});
+    return;
+  }
+
+  g.querySelectorAll("*").forEach((el,i)=>{
+    let len=0;try{len=el.getTotalLength();}catch(e){}
+    if(len){
+      gsap.set(el,{strokeDasharray:len,strokeDashoffset:len});
+      gsap.to(el,{strokeDashoffset:0,duration:1.2,ease:"power2.out",delay:.2+i*.13,scrollTrigger:st});
+    }
+    gsap.to(el,{fillOpacity:1,duration:.8,delay:.95+i*.13,scrollTrigger:st});
+  });
+  gsap.to(".gift-lid",{y:-7,duration:2.4,ease:"sine.inOut",yoyo:true,repeat:-1,delay:2.6,scrollTrigger:st});
+
+  gsap.fromTo(".store",{opacity:0,y:44,rotateX:-30},
+    {opacity:1,y:0,rotateX:0,duration:1,stagger:.17,ease:"power3.out",scrollTrigger:cards});
+
+  document.querySelectorAll(".store").forEach(c=>{
+    const lift=y=>gsap.to(c,{y,duration:.45,ease:"power2.out",overwrite:"auto"});
+    c.addEventListener("mouseenter",()=>lift(-6));
+    c.addEventListener("mouseleave",()=>lift(0));
+  });
+})();
+
 /* Fireworks */
 const fw=document.getElementById("fireworks"),fx=fw.getContext("2d");let parts=[],fwOn=false,last=0;
-function sizeFw(){fw.width=fw.offsetWidth;fw.height=fw.offsetHeight;}
+// El canvas es un elemento reemplazado: con inset:0 y width auto conserva su
+// tamaño intrínseco (300x150) en lugar de estirarse. Medimos la sección padre
+// y fijamos el mapa de bits desde ahí; leer fw.offsetWidth se medía a sí mismo
+// y dejaba los fuegos encerrados en un recuadro de 300x150.
+function sizeFw(){const r=fw.parentElement.getBoundingClientRect();fw.width=Math.round(r.width);fw.height=Math.round(r.height);}
 ScrollTrigger.create({trigger:".finale",start:"top 60%",onEnter:()=>{fwOn=true;sizeFw();},onLeaveBack:()=>fwOn=false});
 addEventListener("resize",()=>{if(fwOn)sizeFw();});
 function burst(){const cx=Math.random()*fw.width,cy=Math.random()*fw.height*.6+fw.height*.1,hue=[45,42,35,50][Math.floor(Math.random()*4)];for(let i=0;i<60;i++){const a=Math.random()*7,sp=Math.random()*4+1;parts.push({x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,hue});}}
@@ -617,8 +714,12 @@ function drawFw(t){
    dibujado cuando no está a la vista, y todo se detiene si la pestaña
    pasa a segundo plano. */
 (function frame(t){
-  if(!document.hidden){drawStars();drawPetals();drawFw(t);}
+  // Reprogramamos ANTES de dibujar y aislamos el dibujado: si una sola función
+  // lanzara, el rAF se quedaría sin reprogramar y moriría toda la animación
+  // del sitio de forma permanente.
   requestAnimationFrame(frame);
+  if(document.hidden)return;
+  try{drawStars();drawPetals();drawFw(t);}catch(e){}
 })(0);
 
 addEventListener("load",()=>ScrollTrigger.refresh());
